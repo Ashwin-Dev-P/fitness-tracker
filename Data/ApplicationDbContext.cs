@@ -17,5 +17,8 @@ namespace fitt.Data
         
 
         public DbSet<ExerciseModel> Exercise { get; set; }
+
+        public DbSet<ExerciseTypeModel> ExerciseType { get; set; }
+
     }
 }

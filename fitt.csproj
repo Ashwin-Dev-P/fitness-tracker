@@ -33,7 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\Pages\" />
     <Folder Include="wwwroot\assets\images\uploads\exercises\" />
+    <Folder Include="wwwroot\assets\images\uploads\exercise_types\" />
   </ItemGroup>
 
   <ItemGroup>

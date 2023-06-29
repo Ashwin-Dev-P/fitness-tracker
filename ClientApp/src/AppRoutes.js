@@ -1,23 +1,22 @@
-import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
+import ApiAuthorzationRoutes from "./components/api-authorization/ApiAuthorizationRoutes";
+
 import { Home } from "./components/Home";
 
+// Pages
+import ExerciseTypePage from "./pages/ExerciseType/ExerciseTypePage";
+
 const AppRoutes = [
-  {
-    index: true,
-    element: <Home />
-  },
-  {
-    path: '/counter',
-    element: <Counter />
-  },
-  {
-    path: '/fetch-data',
-    requireAuth: true,
-    element: <FetchData />
-  },
-  ...ApiAuthorzationRoutes
+	{
+		index: true,
+		element: <Home />,
+	},
+	{
+		path: "/exercise-type",
+		requireAuth: false,
+		element: <ExerciseTypePage />,
+	},
+
+	...ApiAuthorzationRoutes,
 ];
 
 export default AppRoutes;
