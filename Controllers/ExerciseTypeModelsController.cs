@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using fitt.Data;
 using fitt.Models;
+using fitt.Dao;
 
 namespace fitt.Controllers
 {
@@ -16,6 +17,7 @@ namespace fitt.Controllers
     {
         private readonly ApplicationDbContext _context;
         string IMAGE_UPLOAD_PATH = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\assets\images\uploads\exercise_types\");
+
 
         public ExerciseTypeModelsController(ApplicationDbContext context)
         {
@@ -85,12 +87,21 @@ namespace fitt.Controllers
         // POST: api/ExerciseTypeModels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ExerciseTypeModel>> PostExerciseTypeModel([FromForm]  ExerciseTypeModel exerciseTypeModel)
+        public async Task<ActionResult<ExerciseTypeModel>> PostExerciseTypeModel([FromForm] ExerciseTypeModelDao exerciseTypeModelDao)
         {
-          if (_context.ExerciseType == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.ExerciseType'  is null.");
-          }
+
+            
+            if (_context.ExerciseType == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.ExerciseType'  is null.");
+            }
+
+            ExerciseTypeModel exerciseTypeModel = new ExerciseTypeModel() { 
+                Name = exerciseTypeModelDao.Name,
+                Description = exerciseTypeModelDao.Description,
+
+            };
+
 
             string? ext = null;
             if (this.Request.Form.Files.Count > 0)

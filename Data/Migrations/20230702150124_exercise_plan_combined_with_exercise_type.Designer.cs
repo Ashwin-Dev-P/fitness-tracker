@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fitt.Data;
 
@@ -11,9 +12,11 @@ using fitt.Data;
 namespace fitt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230702150124_exercise_plan_combined_with_exercise_type")]
+    partial class exercise_plan_combined_with_exercise_type
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,7 +178,7 @@ namespace fitt.Data.Migrations
 
                     b.HasIndex("ExercisesExerciseId");
 
-                    b.ToTable("ExerciseDailyPlanModelExerciseModel", (string)null);
+                    b.ToTable("ExerciseDailyPlanModelExerciseModel");
                 });
 
             modelBuilder.Entity("ExerciseDailyPlanModelExercisePlanModel", b =>
@@ -190,7 +193,7 @@ namespace fitt.Data.Migrations
 
                     b.HasIndex("ExercisePlanModelExercisePlanId");
 
-                    b.ToTable("ExerciseDailyPlanModelExercisePlanModel", (string)null);
+                    b.ToTable("ExerciseDailyPlanModelExercisePlanModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -412,7 +415,7 @@ namespace fitt.Data.Migrations
 
                     b.HasKey("ExerciseDailyPlanId");
 
-                    b.ToTable("ExerciseDailyPlan", (string)null);
+                    b.ToTable("ExerciseDailyPlan");
                 });
 
             modelBuilder.Entity("fitt.Models.ExerciseDailyPlanModelExerciseModel", b =>
@@ -436,7 +439,7 @@ namespace fitt.Data.Migrations
                     b.HasIndex("ExerciseId", "ExerciseDailyPlanId")
                         .IsUnique();
 
-                    b.ToTable("ExerciseDailyPlanExercise", (string)null);
+                    b.ToTable("ExerciseDailyPlanExercise");
                 });
 
             modelBuilder.Entity("fitt.Models.ExerciseModel", b =>
@@ -459,7 +462,7 @@ namespace fitt.Data.Migrations
 
                     b.HasKey("ExerciseId");
 
-                    b.ToTable("Exercise", (string)null);
+                    b.ToTable("Exercise");
                 });
 
             modelBuilder.Entity("fitt.Models.ExercisePlanModel", b =>
@@ -484,7 +487,7 @@ namespace fitt.Data.Migrations
 
                     b.HasIndex("ExerciseTypeId");
 
-                    b.ToTable("ExercisePlan", (string)null);
+                    b.ToTable("ExercisePlan");
                 });
 
             modelBuilder.Entity("fitt.Models.ExerciseTypeModel", b =>
@@ -507,7 +510,7 @@ namespace fitt.Data.Migrations
 
                     b.HasKey("ExerciseTypeId");
 
-                    b.ToTable("ExerciseType", (string)null);
+                    b.ToTable("ExerciseType");
                 });
 
             modelBuilder.Entity("ExerciseDailyPlanModelExerciseModel", b =>

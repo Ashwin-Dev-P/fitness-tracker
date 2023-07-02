@@ -26,25 +26,25 @@ namespace fitt.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ExerciseDailyPlanModelExerciseModel>>> GetExerciseDailyPlanExerciseModel()
         {
-          if (_context.ExerciseDailyPlanExerciseModel == null)
+          if (_context.ExerciseDailyPlanExercise == null)
           {
               return NotFound();
           }
 
           
-            return await _context.ExerciseDailyPlanExerciseModel.ToListAsync();
+            return await _context.ExerciseDailyPlanExercise.ToListAsync();
         }
 
         // GET: api/ExerciseDailyPlanModelExerciseModels/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ExerciseDailyPlanModelExerciseModel>> GetExerciseDailyPlanModelExerciseModel(int id)
         {
-          if (_context.ExerciseDailyPlanExerciseModel == null)
+          if (_context.ExerciseDailyPlanExercise == null)
           {
               return NotFound();
           }
 
-            var ans = from item in _context.ExerciseDailyPlanExerciseModel
+            var ans = from item in _context.ExerciseDailyPlanExercise
                       where item.ExerciseDailyPlanId == id
                       join 
                       exercise in _context.Exercise on item.ExerciseId equals exercise.ExerciseId
@@ -60,7 +60,7 @@ namespace fitt.Controllers
                 Console.WriteLine(exercise.ImageExtension);
 
             }
-            var exerciseDailyPlanModelExerciseModel = await _context.ExerciseDailyPlanExerciseModel.FindAsync(id);
+            var exerciseDailyPlanModelExerciseModel = await _context.ExerciseDailyPlanExercise.FindAsync(id);
             
             
             if (exerciseDailyPlanModelExerciseModel == null)
@@ -113,11 +113,11 @@ namespace fitt.Controllers
                  ExerciseId = exerciseDailyPlanModelExerciseModelDao.ExerciseId
             };
 
-          if (_context.ExerciseDailyPlanExerciseModel == null)
+          if (_context.ExerciseDailyPlanExercise == null)
           {
               return Problem("Entity set 'ApplicationDbContext.ExerciseDailyPlanExerciseModel'  is null.");
           }
-            _context.ExerciseDailyPlanExerciseModel.Add(exerciseDailyPlanModelExerciseModel);
+            _context.ExerciseDailyPlanExercise.Add(exerciseDailyPlanModelExerciseModel);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetExerciseDailyPlanModelExerciseModel", new { id = exerciseDailyPlanModelExerciseModel.ExerciseDailyPlanExerciseId }, exerciseDailyPlanModelExerciseModel);
@@ -127,17 +127,17 @@ namespace fitt.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExerciseDailyPlanModelExerciseModel(int id)
         {
-            if (_context.ExerciseDailyPlanExerciseModel == null)
+            if (_context.ExerciseDailyPlanExercise == null)
             {
                 return NotFound();
             }
-            var exerciseDailyPlanModelExerciseModel = await _context.ExerciseDailyPlanExerciseModel.FindAsync(id);
+            var exerciseDailyPlanModelExerciseModel = await _context.ExerciseDailyPlanExercise.FindAsync(id);
             if (exerciseDailyPlanModelExerciseModel == null)
             {
                 return NotFound();
             }
 
-            _context.ExerciseDailyPlanExerciseModel.Remove(exerciseDailyPlanModelExerciseModel);
+            _context.ExerciseDailyPlanExercise.Remove(exerciseDailyPlanModelExerciseModel);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -145,7 +145,7 @@ namespace fitt.Controllers
 
         private bool ExerciseDailyPlanModelExerciseModelExists(int id)
         {
-            return (_context.ExerciseDailyPlanExerciseModel?.Any(e => e.ExerciseDailyPlanExerciseId == id)).GetValueOrDefault();
+            return (_context.ExerciseDailyPlanExercise?.Any(e => e.ExerciseDailyPlanExerciseId == id)).GetValueOrDefault();
         }
     }
 }

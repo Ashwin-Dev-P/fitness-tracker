@@ -14,5 +14,8 @@ namespace fitt.Models
         public string? Description { get; set; }
 
         public string? ImageExtension { get; set; }
+
+
+        public virtual ICollection<ExercisePlanModel> ExercisePlan { get; set; }    
     }
 }

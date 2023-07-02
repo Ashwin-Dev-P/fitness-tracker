@@ -42,7 +42,7 @@ namespace fitt.Controllers
               return NotFound();
           }
 
-            List<ExerciseModel>? exercises = await (from item in _context.ExerciseDailyPlanExerciseModel
+            List<ExerciseModel>? exercises = await (from item in _context.ExerciseDailyPlanExercise
                             where item.ExerciseDailyPlanId == id
                             join
                             exercise in _context.Exercise on item.ExerciseId equals exercise.ExerciseId

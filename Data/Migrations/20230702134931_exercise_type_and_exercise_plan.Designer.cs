@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fitt.Data;
 
@@ -11,9 +12,11 @@ using fitt.Data;
 namespace fitt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230702134931_exercise_type_and_exercise_plan")]
+    partial class exercise_type_and_exercise_plan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,22 +178,7 @@ namespace fitt.Data.Migrations
 
                     b.HasIndex("ExercisesExerciseId");
 
-                    b.ToTable("ExerciseDailyPlanModelExerciseModel", (string)null);
-                });
-
-            modelBuilder.Entity("ExerciseDailyPlanModelExercisePlanModel", b =>
-                {
-                    b.Property<int>("ExerciseDailyPlansExerciseDailyPlanId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExercisePlanModelExercisePlanId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExerciseDailyPlansExerciseDailyPlanId", "ExercisePlanModelExercisePlanId");
-
-                    b.HasIndex("ExercisePlanModelExercisePlanId");
-
-                    b.ToTable("ExerciseDailyPlanModelExercisePlanModel", (string)null);
+                    b.ToTable("ExerciseDailyPlanModelExerciseModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -412,7 +400,7 @@ namespace fitt.Data.Migrations
 
                     b.HasKey("ExerciseDailyPlanId");
 
-                    b.ToTable("ExerciseDailyPlan", (string)null);
+                    b.ToTable("ExerciseDailyPlan");
                 });
 
             modelBuilder.Entity("fitt.Models.ExerciseDailyPlanModelExerciseModel", b =>
@@ -436,7 +424,7 @@ namespace fitt.Data.Migrations
                     b.HasIndex("ExerciseId", "ExerciseDailyPlanId")
                         .IsUnique();
 
-                    b.ToTable("ExerciseDailyPlanExercise", (string)null);
+                    b.ToTable("ExerciseDailyPlanExerciseModel");
                 });
 
             modelBuilder.Entity("fitt.Models.ExerciseModel", b =>
@@ -459,7 +447,7 @@ namespace fitt.Data.Migrations
 
                     b.HasKey("ExerciseId");
 
-                    b.ToTable("Exercise", (string)null);
+                    b.ToTable("Exercise");
                 });
 
             modelBuilder.Entity("fitt.Models.ExercisePlanModel", b =>
@@ -473,18 +461,37 @@ namespace fitt.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ExerciseTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ExercisePlanId");
 
-                    b.HasIndex("ExerciseTypeId");
+                    b.ToTable("ExercisePlan");
+                });
 
-                    b.ToTable("ExercisePlan", (string)null);
+            modelBuilder.Entity("fitt.Models.ExerciseTypeExercisePlanModel", b =>
+                {
+                    b.Property<int>("ExerciseTypeExercisePlanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExerciseTypeExercisePlanId"));
+
+                    b.Property<int>("ExercisePlanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExerciseTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExerciseTypeExercisePlanId");
+
+                    b.HasIndex("ExercisePlanId");
+
+                    b.HasIndex("ExerciseTypeId", "ExercisePlanId")
+                        .IsUnique();
+
+                    b.ToTable("ExerciseTypeExercisePlanModel");
                 });
 
             modelBuilder.Entity("fitt.Models.ExerciseTypeModel", b =>
@@ -507,7 +514,7 @@ namespace fitt.Data.Migrations
 
                     b.HasKey("ExerciseTypeId");
 
-                    b.ToTable("ExerciseType", (string)null);
+                    b.ToTable("ExerciseType");
                 });
 
             modelBuilder.Entity("ExerciseDailyPlanModelExerciseModel", b =>
@@ -521,21 +528,6 @@ namespace fitt.Data.Migrations
                     b.HasOne("fitt.Models.ExerciseModel", null)
                         .WithMany()
                         .HasForeignKey("ExercisesExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ExerciseDailyPlanModelExercisePlanModel", b =>
-                {
-                    b.HasOne("fitt.Models.ExerciseDailyPlanModel", null)
-                        .WithMany()
-                        .HasForeignKey("ExerciseDailyPlansExerciseDailyPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fitt.Models.ExercisePlanModel", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisePlanModelExercisePlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -610,20 +602,23 @@ namespace fitt.Data.Migrations
                     b.Navigation("ExerciseDailyPlan");
                 });
 
-            modelBuilder.Entity("fitt.Models.ExercisePlanModel", b =>
+            modelBuilder.Entity("fitt.Models.ExerciseTypeExercisePlanModel", b =>
                 {
+                    b.HasOne("fitt.Models.ExercisePlanModel", "ExercisePlan")
+                        .WithMany()
+                        .HasForeignKey("ExercisePlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("fitt.Models.ExerciseTypeModel", "ExerciseType")
-                        .WithMany("ExercisePlan")
+                        .WithMany()
                         .HasForeignKey("ExerciseTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ExerciseType");
-                });
-
-            modelBuilder.Entity("fitt.Models.ExerciseTypeModel", b =>
-                {
                     b.Navigation("ExercisePlan");
+
+                    b.Navigation("ExerciseType");
                 });
 #pragma warning restore 612, 618
         }
