@@ -22,25 +22,23 @@ namespace fitt.Data
             base.OnModelCreating(modelBuilder);
 
 
-            //modelBuilder.Entity<ExerciseDailyPlanModel>()
-            //    .HasMany(e => e.Exercises).WithMany(e => e.ExerciseDailyPlans)
-            //    .UsingEntity<ExerciseDailyPlanAndExercisesModel>(
-            //        l=> l.HasOne<ExerciseModel>().WithMany().HasForeignKey(e=>e.ExerciseId),
-            //        r => r.HasOne<ExerciseDailyPlanModel>().WithMany().HasForeignKey(l => l.ExerciseDailyPlanId)
-            //    );
+
 
             modelBuilder.Entity<ExerciseModel>()
                 .HasMany(e => e.ExerciseDailyPlans)
-                .WithMany(e => e.Exercises)
-                ;
+                .WithMany(e => e.Exercises);
 
             modelBuilder.Entity<ExerciseDailyPlanModel>()
                 .HasMany(e => e.Exercises)
                 .WithMany(p => p.ExerciseDailyPlans);
 
+            // Only unique exercises can be present in a daily plan
+            modelBuilder.Entity<ExerciseDailyPlanModelExerciseModel>()
+                .HasIndex(e=>new { e.ExerciseId , e.ExerciseDailyPlanId }).IsUnique()
 
-            //modelBuilder.Entity<ExerciseDailyPlanExerciseModel>()
-            //    .HasKey(x => new { x.ExerciseDailyPlanId, x.ExerciseId });
+                ;
+
+            
 
 
 
