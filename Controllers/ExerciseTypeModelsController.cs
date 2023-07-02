@@ -37,20 +37,26 @@ namespace fitt.Controllers
 
         // GET: api/ExerciseTypeModels/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ExerciseTypeModel>> GetExerciseTypeModel(int id)
+        public async Task<ActionResult<List<ExercisePlanDisplayModelDao>>> GetExerciseTypeModel(int id)
         {
           if (_context.ExerciseType == null)
           {
               return NotFound();
           }
-            var exerciseTypeModel = await _context.ExerciseType.FindAsync(id);
+            
 
-            if (exerciseTypeModel == null)
+            List<ExercisePlanDisplayModelDao> exercisePlans = await (from exercisePlan in _context.ExercisePlan
+                                                           where exercisePlan.ExerciseTypeId == id
+                                                           select new ExercisePlanDisplayModelDao()  { Name = exercisePlan.Name , Description = exercisePlan.Description , ExercisePlanId = exercisePlan.ExercisePlanId  }
+                                ).ToListAsync();
+
+            if (exercisePlans == null || exercisePlans.Count == 0)
             {
                 return NotFound();
             }
+                                
 
-            return exerciseTypeModel;
+            return exercisePlans;
         }
 
         // PUT: api/ExerciseTypeModels/5
