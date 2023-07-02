@@ -37,10 +37,10 @@ namespace fitt.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ExercisePlanModel>> GetExercisePlanModel(int id)
         {
-          if (_context.ExercisePlan == null)
-          {
-              return NotFound();
-          }
+            if (_context.ExercisePlan == null)
+            {
+                return NotFound();
+            }
             var exercisePlanModel = await _context.ExercisePlan.FindAsync(id);
 
             if (exercisePlanModel == null)
@@ -49,6 +49,33 @@ namespace fitt.Controllers
             }
 
             return exercisePlanModel;
+        }
+
+        // GET: api/ExercisePlanModels/5
+        [HttpGet("{id}/ExerciseDailyPlans")]
+        public async Task<ActionResult<List<ExerciseDailyPlanModelDao>>> GetExerciseDailyPlanModelsWithinExercisePlanModels(int id)
+        {
+            if (_context.ExercisePlan == null)
+            {
+                return NotFound();
+            }
+            
+
+            List<ExerciseDailyPlanModelDao> daily_exercise_plans = await (from exercisePlanExerciseDailyPlan in _context.ExercisePlanExerciseDailyPlanModel
+                                      where exercisePlanExerciseDailyPlan.ExercisePlanId == id
+                                      join 
+                                      exerciseDailyPlan in _context.ExerciseDailyPlan
+                                      on exercisePlanExerciseDailyPlan.ExerciseDailyPlanId equals exerciseDailyPlan.ExerciseDailyPlanId
+                                      select (new ExerciseDailyPlanModelDao() { ExerciseDailyPlanId= exerciseDailyPlan.ExerciseDailyPlanId, Name = exerciseDailyPlan.Name , Description = exerciseDailyPlan.Description  })
+                                        ).ToListAsync();
+                                      ;
+
+            if ( daily_exercise_plans == null || daily_exercise_plans.Count == 0 )
+            {
+                return NotFound();
+            }
+
+            return daily_exercise_plans;
         }
 
         // PUT: api/ExercisePlanModels/5

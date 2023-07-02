@@ -50,6 +50,9 @@ namespace fitt.Data
             modelBuilder.Entity<ExerciseDailyPlanModelExerciseModel>()
                 .HasIndex(e=>new { e.ExerciseId , e.ExerciseDailyPlanId }).IsUnique();
 
+            // Only unique daily plans can be present in a exercise
+            modelBuilder.Entity<ExercisePlanExerciseDailyPlanModel>()
+                .HasIndex(e => new { e.ExercisePlanId, e.ExerciseDailyPlanId });
             
 
 
@@ -66,6 +69,7 @@ namespace fitt.Data
 
         public DbSet<ExerciseModel> Exercise { get; set; }
         public DbSet<fitt.Models.ExerciseDailyPlanModelExerciseModel> ExerciseDailyPlanExercise { get; set; } = default!;
+        public DbSet<fitt.Models.ExercisePlanExerciseDailyPlanModel> ExercisePlanExerciseDailyPlanModel { get; set; } = default!;
         
     }
 }
