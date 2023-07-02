@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import authService from "../../components/api-authorization/AuthorizeService";
-
 // Components
 import ExerciseTypeItemComponent from "../../components/ExerciseTypeItemComponent/ExerciseTypeItemComponent";
 
@@ -43,7 +41,8 @@ class ExerciseTypePage extends Component {
 											<li
 												key={exercise_type.id}
 												className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
-												<Link to={`/exercise-type/${exercise_type.id}`}>
+												<Link
+													to={`/exercise-type/${exercise_type.exerciseTypeId}`}>
 													<ExerciseTypeItemComponent
 														exercise_type={exercise_type}
 													/>

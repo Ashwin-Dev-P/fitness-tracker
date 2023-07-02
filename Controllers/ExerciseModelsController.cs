@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using fitt.Data;
 using fitt.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace fitt.Controllers
 {
@@ -15,9 +14,9 @@ namespace fitt.Controllers
     [ApiController]
     public class ExerciseModelsController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
         string IMAGE_UPLOAD_PATH = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\assets\images\uploads\exercises\");
 
-        private readonly ApplicationDbContext _context;
 
         public ExerciseModelsController(ApplicationDbContext context)
         {
@@ -58,7 +57,7 @@ namespace fitt.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExerciseModel(int id, ExerciseModel exerciseModel)
         {
-            if (id != exerciseModel.Id)
+            if (id != exerciseModel.ExerciseId)
             {
                 return BadRequest();
             }
@@ -87,12 +86,12 @@ namespace fitt.Controllers
         // POST: api/ExerciseModels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ExerciseModel>> PostExerciseModel( [FromForm] ExerciseModel exerciseModel)
+        public async Task<ActionResult<ExerciseModel>> PostExerciseModel([FromForm] ExerciseModel exerciseModel)
         {
-            if (_context.Exercise == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Exercise'  is null.");
-            }
+          if (_context.Exercise == null)
+          {
+              return Problem("Entity set 'ApplicationDbContext.Exercise'  is null.");
+          }
 
             string? ext = null;
             if (this.Request.Form.Files.Count > 0)
@@ -102,31 +101,26 @@ namespace fitt.Controllers
                 exerciseModel.ImageExtension = ext;
             }
 
-            
-
             _context.Exercise.Add(exerciseModel);
             await _context.SaveChangesAsync();
-
 
             // IMAGE UPLOAD
             if (this.Request.Form.Files.Count > 0)
             {
                 // Generate name for the file
-                int movieId = exerciseModel.Id;
-                string fileName = Convert.ToString(movieId) + ext;
+                int exerciseId = exerciseModel.ExerciseId;
+                string fileName = Convert.ToString(exerciseId) + ext;
 
-                
+
                 // Create path and stream it to the location
-                var filePath = @IMAGE_UPLOAD_PATH+ fileName;
+                var filePath = @IMAGE_UPLOAD_PATH + fileName;
                 using (var stream = System.IO.File.Create(filePath))
                 {
                     this.Request.Form.Files[0].CopyTo(stream);
                 }
             }
 
-            
-
-            return CreatedAtAction("GetExerciseModel", new { id = exerciseModel.Id }, exerciseModel);
+            return CreatedAtAction("GetExerciseModel", new { id = exerciseModel.ExerciseId }, exerciseModel);
         }
 
         // DELETE: api/ExerciseModels/5
@@ -143,18 +137,6 @@ namespace fitt.Controllers
                 return NotFound();
             }
 
-
-            // Generate name for the image file
-            int exerciseId = exerciseModel.Id;
-            string ext = exerciseModel.ImageExtension;
-          
-            string fileName = Convert.ToString(exerciseId) + ext;
-
-            // Create path and delete it from the location
-            string filePath =  Path.Combine(IMAGE_UPLOAD_PATH, fileName);
-            System.IO.File.Delete(filePath);
-
-
             _context.Exercise.Remove(exerciseModel);
             await _context.SaveChangesAsync();
 
@@ -163,7 +145,7 @@ namespace fitt.Controllers
 
         private bool ExerciseModelExists(int id)
         {
-            return (_context.Exercise?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Exercise?.Any(e => e.ExerciseId == id)).GetValueOrDefault();
         }
     }
 }

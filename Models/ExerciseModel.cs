@@ -8,7 +8,7 @@ namespace fitt.Models
 
 
         [Key]
-        public int Id { get; set; }
+        public int ExerciseId { get; set; }
 
         [Required]
         public required string Name { get; set; }
@@ -17,6 +17,8 @@ namespace fitt.Models
         public string?  Description { get; set; }
 
         public string? ImageExtension { get; set; }
+
+        public virtual ICollection<ExerciseDailyPlanModel>? ExerciseDailyPlans { get; set; }
 
     }
 }

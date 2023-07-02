@@ -5,7 +5,7 @@ namespace fitt.Models
     public class ExerciseTypeModel
     {
         [Key]
-        public int Id { get; set; }
+        public int ExerciseTypeId { get; set; }
 
         [Required]
         public required string Name { get; set; }

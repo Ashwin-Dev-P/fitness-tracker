@@ -14,9 +14,8 @@ namespace fitt.Controllers
     [ApiController]
     public class ExerciseTypeModelsController : ControllerBase
     {
-        string IMAGE_UPLOAD_PATH = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\assets\images\uploads\exercise_types\");
-
         private readonly ApplicationDbContext _context;
+        string IMAGE_UPLOAD_PATH = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\assets\images\uploads\exercise_types\");
 
         public ExerciseTypeModelsController(ApplicationDbContext context)
         {
@@ -57,7 +56,7 @@ namespace fitt.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExerciseTypeModel(int id, ExerciseTypeModel exerciseTypeModel)
         {
-            if (id != exerciseTypeModel.Id)
+            if (id != exerciseTypeModel.ExerciseTypeId)
             {
                 return BadRequest();
             }
@@ -86,7 +85,7 @@ namespace fitt.Controllers
         // POST: api/ExerciseTypeModels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ExerciseTypeModel>> PostExerciseTypeModel([FromForm] ExerciseTypeModel exerciseTypeModel)
+        public async Task<ActionResult<ExerciseTypeModel>> PostExerciseTypeModel([FromForm]  ExerciseTypeModel exerciseTypeModel)
         {
           if (_context.ExerciseType == null)
           {
@@ -104,12 +103,11 @@ namespace fitt.Controllers
             _context.ExerciseType.Add(exerciseTypeModel);
             await _context.SaveChangesAsync();
 
-
             // IMAGE UPLOAD
             if (this.Request.Form.Files.Count > 0)
             {
                 // Generate name for the file
-                int movieId = exerciseTypeModel.Id;
+                int movieId = exerciseTypeModel.ExerciseTypeId;
                 string fileName = Convert.ToString(movieId) + ext;
 
 
@@ -121,7 +119,7 @@ namespace fitt.Controllers
                 }
             }
 
-            return CreatedAtAction("GetExerciseTypeModel", new { id = exerciseTypeModel.Id }, exerciseTypeModel);
+            return CreatedAtAction("GetExerciseTypeModel", new { id = exerciseTypeModel.ExerciseTypeId }, exerciseTypeModel);
         }
 
         // DELETE: api/ExerciseTypeModels/5
@@ -138,17 +136,6 @@ namespace fitt.Controllers
                 return NotFound();
             }
 
-            // Generate name for the image file
-            int exerciseTypeId = exerciseTypeModel.Id;
-            string ext = exerciseTypeModel.ImageExtension;
-
-            string fileName = Convert.ToString(exerciseTypeId) + ext;
-
-            // Create path and delete it from the location
-            string filePath = Path.Combine(IMAGE_UPLOAD_PATH, fileName);
-            System.IO.File.Delete(filePath);
-
-
             _context.ExerciseType.Remove(exerciseTypeModel);
             await _context.SaveChangesAsync();
 
@@ -157,7 +144,7 @@ namespace fitt.Controllers
 
         private bool ExerciseTypeModelExists(int id)
         {
-            return (_context.ExerciseType?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.ExerciseType?.Any(e => e.ExerciseTypeId == id)).GetValueOrDefault();
         }
     }
 }

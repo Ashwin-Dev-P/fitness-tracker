@@ -5,13 +5,13 @@ import "./ExerciseTypeItemComponent.css";
 
 export default function ExerciseTypeItemComponent(props) {
 	const { exercise_type } = props;
-	const { id, name, description, imageExtension } = exercise_type;
+	const { exerciseTypeId, name, description, imageExtension } = exercise_type;
 	return (
 		<div className="card">
 			<img
 				width="100%"
 				className="card-img-top"
-				src={`https://localhost:7102/assets/images/uploads/exercise_types/${id}${imageExtension}`}
+				src={`https://localhost:7102/assets/images/uploads/exercise_types/${exerciseTypeId}${imageExtension}`}
 				alt="Card image cap"
 			/>
 			<div className="card-body">
