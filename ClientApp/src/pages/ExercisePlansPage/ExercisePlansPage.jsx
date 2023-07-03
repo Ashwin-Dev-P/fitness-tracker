@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
+
+// Components
 import ExercisePlanItemComponent from "../../components/ExercisePlanItemComponent/ExercisePlanItemComponent";
 
-export default function ExercisePlansPage() {
+// Shared components
+import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
+
+function ExercisePlansPage() {
 	const { exercise_type_id } = useParams();
-	console.log(exercise_type_id);
 
 	const [exercisePlans, setExercisePlans] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
@@ -45,7 +48,7 @@ export default function ExercisePlansPage() {
 								</>
 							) : (
 								<div>
-									<p>No exercise plans available</p>
+									<p className="text-center">No exercise plans available</p>
 								</div>
 							)}
 						</>
@@ -59,26 +62,27 @@ export default function ExercisePlansPage() {
 		</div>
 	);
 
-	function getExercisePlans(exercise_type_id) {
-		fetch(`api/ExerciseTypeModels/${exercise_type_id}`)
-			.then((response) => {
-				return response.json();
+	async function getExercisePlans(exercise_type_id) {
+		await fetch(`api/ExerciseTypeModels/${exercise_type_id}`)
+			.then(async (response) => {
+				return await response.json();
 			})
-			.then((data) => {
-				console.log(data);
-				setExercisePlans(data);
+			.then(async (data) => {
+				await setExercisePlans(data);
 			})
-			.catch((error) => {
+			.catch(async (error) => {
 				const error_message =
 					error && error.message
 						? error.message
 						: "Unable to fetch exercise types. Something went wrong";
 
-				setErrorMessage(error_message);
+				await setErrorMessage(error_message);
 				console.error(error);
 				console.error(error.message);
 			});
 
-		setLoading(false);
+		await setLoading(false);
 	}
 }
+
+export default ExercisePlansPage;
