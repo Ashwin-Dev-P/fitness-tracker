@@ -39,10 +39,10 @@ class ExerciseTypePage extends Component {
 									<ul className="row">
 										{exercise_types.map((exercise_type) => (
 											<li
-												key={exercise_type.id}
+												key={exercise_type.exerciseTypeId}
 												className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
 												<Link
-													to={`/exercise-type/${exercise_type.exerciseTypeId}`}>
+													to={`/exercise-plans/${exercise_type.exerciseTypeId}`}>
 													<ExerciseTypeItemComponent
 														exercise_type={exercise_type}
 													/>

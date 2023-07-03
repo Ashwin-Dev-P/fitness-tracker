@@ -4,6 +4,7 @@ import { Home } from "./components/Home";
 
 // Pages
 import ExerciseTypePage from "./pages/ExerciseType/ExerciseTypePage";
+import ExercisePlansPage from "./pages/ExercisePlansPage/ExercisePlansPage";
 
 const AppRoutes = [
 	{
@@ -14,6 +15,11 @@ const AppRoutes = [
 		path: "/exercise-type",
 		requireAuth: false,
 		element: <ExerciseTypePage />,
+	},
+	{
+		path: "/exercise-plans/:exercise_type_id",
+		requireAuth: false,
+		element: <ExercisePlansPage />,
 	},
 
 	...ApiAuthorzationRoutes,
