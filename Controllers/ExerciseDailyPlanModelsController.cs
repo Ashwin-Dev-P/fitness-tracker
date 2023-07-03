@@ -42,37 +42,49 @@ namespace fitt.Controllers
               return NotFound();
           }
 
-            List<ExerciseModel>? exercises = await (from item in _context.ExerciseDailyPlanExercise
-                            where item.ExerciseDailyPlanId == id
-                            join
-                            exercise in _context.Exercise on item.ExerciseId equals exercise.ExerciseId
-                            join
-                            exerciseDailyPlan in _context.ExerciseDailyPlan on item.ExerciseDailyPlanId equals exerciseDailyPlan.ExerciseDailyPlanId
-                           // select (new { item.Exercise.ExerciseId , item.Exercise.Name , item.Exercise.ImageExtension, item.Exercise.Description   })
-                           select (item.Exercise)).ToListAsync();
-                            ;
-
-
-
-
-
-            Console.WriteLine(exercises.Count);
+           
 
             
             var exerciseDailyPlanModel = await _context.ExerciseDailyPlan.FindAsync(id);
-            
-
-            if (exercises.Count > 0)
-            {
-                exerciseDailyPlanModel.Exercises = exercises;
-            }
-
             if (exerciseDailyPlanModel == null)
             {
                 return NotFound();
             }
 
+           
+
+            
+
             return exerciseDailyPlanModel;
+        }
+
+        // GET: api/ExerciseDailyPlanModels/5/Exercises
+        [HttpGet("{id}/Exercises")]
+        public async Task<ActionResult<List<ExerciseModel>>> GetExercisesFromExerciseDailyPlanModel(int id)
+        {
+            if (_context.ExerciseDailyPlan == null)
+            {
+                return NotFound();
+            }
+
+            List<ExerciseModel>? exercises = await (from item in _context.ExerciseDailyPlanExercise
+                                                    where item.ExerciseDailyPlanId == id
+                                                    join
+                                                    exercise in _context.Exercise on item.ExerciseId equals exercise.ExerciseId
+                                                    join
+                                                    exerciseDailyPlan in _context.ExerciseDailyPlan on item.ExerciseDailyPlanId equals exerciseDailyPlan.ExerciseDailyPlanId
+                                                    // select (new { item.Exercise.ExerciseId , item.Exercise.Name , item.Exercise.ImageExtension, item.Exercise.Description   })
+                                                    select (item.Exercise)).ToListAsync();
+            ;
+
+            if (exercises.Count == 0)
+            {
+                return NotFound();
+            }
+
+
+
+            return exercises;
         }
 
         // PUT: api/ExerciseDailyPlanModels/5

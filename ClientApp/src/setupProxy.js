@@ -10,6 +10,7 @@ const target = env.ASPNETCORE_HTTPS_PORT
 const context = [
 	"/api/exercisetypemodels",
 	"/api/ExerciseTypeModels",
+	"/api/exerciseplanmodels",
 	"/_configuration",
 	"/.well-known",
 	"/Identity",

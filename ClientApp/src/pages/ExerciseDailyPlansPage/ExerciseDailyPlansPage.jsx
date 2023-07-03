@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-// Components
-import ExercisePlanItemComponent from "../../components/ExercisePlanItemComponent/ExercisePlanItemComponent";
-
-// Shared components
-import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
+// Shared component
 import BreadCrumbComponent from "../../components/SharedComponents/BreadCrumbComponent/BreadCrumbComponent";
+import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
+import ExerciseDailyPlanItemComponent from "../../components/ExerciseDailyPlanItemComponent/ExerciseDailyPlanItemComponent";
 
-function ExercisePlansPage() {
-	const { exercise_type_id } = useParams();
+function ExerciseDailyPlansPage() {
+	const { exercise_plan_id, exercise_type_id } = useParams();
+	console.log(exercise_plan_id);
 
-	const [exercisePlans, setExercisePlans] = useState([]);
+	const [exerciseDailyPlans, setExerciseDailyPlans] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		getExercisePlans(exercise_type_id);
+		getExerciseDailyPlans(exercise_plan_id);
 	}, []);
 
 	const crumbs = [
@@ -30,7 +29,11 @@ function ExercisePlansPage() {
 		},
 		{
 			name: "Exercise plans",
-			route: "/exercise-plans",
+			route: `/exercise-plans/${exercise_type_id}`,
+		},
+		{
+			name: "Daily plans",
+			route: "/exercise-daily-plans",
 		},
 	];
 
@@ -43,20 +46,18 @@ function ExercisePlansPage() {
 						<div className="text-center text-danger">{errorMessage}</div>
 					) : (
 						<>
-							{exercisePlans && exercisePlans.length > 0 ? (
+							{exerciseDailyPlans && exerciseDailyPlans.length > 0 ? (
 								<>
-									<h2 className="text-center">
-										Select your desired training plan
-									</h2>
+									<h2 className="text-center">Daily plans</h2>
 									<ul className="row">
-										{exercisePlans.map((exercisePlan) => (
+										{exerciseDailyPlans.map((exerciseDailyPlan) => (
 											<li
-												key={exercisePlan.exercisePlanId}
+												key={exerciseDailyPlan.exerciseDailyPlanId}
 												className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
 												<Link
-													to={`/exercise-daily-plans/${exercisePlan.exercisePlanId}/exercise-plan/${exercise_type_id}`}>
-													<ExercisePlanItemComponent
-														exercisePlan={exercisePlan}
+													to={`/exercises/${exerciseDailyPlan.exerciseDailyPlanId}`}>
+													<ExerciseDailyPlanItemComponent
+														exerciseDailyPlan={exerciseDailyPlan}
 													/>
 												</Link>
 											</li>
@@ -79,13 +80,13 @@ function ExercisePlansPage() {
 		</div>
 	);
 
-	async function getExercisePlans(exercise_type_id) {
-		await fetch(`api/ExerciseTypeModels/${exercise_type_id}`)
+	async function getExerciseDailyPlans(exercise_type_id) {
+		await fetch(`api/exerciseplanmodels/${exercise_type_id}/ExerciseDailyPlans`)
 			.then(async (response) => {
 				return await response.json();
 			})
 			.then(async (data) => {
-				await setExercisePlans(data);
+				await setExerciseDailyPlans(data);
 			})
 			.catch(async (error) => {
 				const error_message =
@@ -101,5 +102,4 @@ function ExercisePlansPage() {
 		await setLoading(false);
 	}
 }
-
-export default ExercisePlansPage;
+export default ExerciseDailyPlansPage;
