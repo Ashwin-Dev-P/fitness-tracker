@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 // CSS
 import "./ExerciseTypePage.css";
+import BreadCrumbComponent from "../../components/SharedComponents/BreadCrumbComponent/BreadCrumbComponent";
 
 class ExerciseTypePage extends Component {
 	constructor(props) {
@@ -24,8 +25,19 @@ class ExerciseTypePage extends Component {
 
 	render() {
 		const { loading, error_message, exercise_types } = this.state;
+		const crumbs = [
+			{
+				name: "Home",
+				route: "/",
+			},
+			{
+				name: "Exercise types",
+				route: "/exercise-type",
+			},
+		];
 		return (
 			<>
+				<BreadCrumbComponent crumbs={crumbs} />
 				{loading === false ? (
 					error_message ? (
 						<div className="text-center text-danger">{error_message}</div>

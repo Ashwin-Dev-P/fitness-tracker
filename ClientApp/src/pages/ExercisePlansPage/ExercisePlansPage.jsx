@@ -6,6 +6,7 @@ import ExercisePlanItemComponent from "../../components/ExercisePlanItemComponen
 
 // Shared components
 import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
+import BreadCrumbComponent from "../../components/SharedComponents/BreadCrumbComponent/BreadCrumbComponent";
 
 function ExercisePlansPage() {
 	const { exercise_type_id } = useParams();
@@ -18,8 +19,24 @@ function ExercisePlansPage() {
 		getExercisePlans(exercise_type_id);
 	}, []);
 
+	const crumbs = [
+		{
+			name: "Home",
+			route: "/",
+		},
+		{
+			name: "Exercise types",
+			route: "/exercise-type",
+		},
+		{
+			name: "Exercise plans",
+			route: "/exercise-plans",
+		},
+	];
+
 	return (
 		<div>
+			<BreadCrumbComponent crumbs={crumbs} />
 			<div>
 				{loading === false ? (
 					errorMessage ? (

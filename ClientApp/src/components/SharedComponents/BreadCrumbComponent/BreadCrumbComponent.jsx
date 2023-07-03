@@ -1,0 +1,32 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+export default function BreadCrumbComponent(props) {
+	const { crumbs } = props;
+	return (
+		<nav aria-label="breadcrumb">
+			<ol className="breadcrumb">
+				{crumbs.map(function (crumb, i) {
+					if (i == crumbs.length - 1) {
+						return (
+							<li
+								className="breadcrumb-item active"
+								key={crumb.route}>
+								{crumb.name}
+							</li>
+						);
+					} else {
+						return (
+							<li
+								className="breadcrumb-item "
+								key={crumb.route}>
+								<Link to={crumb.route}>{crumb.name}</Link>
+							</li>
+						);
+					}
+				})}
+			</ol>
+			<hr />
+		</nav>
+	);
+}
