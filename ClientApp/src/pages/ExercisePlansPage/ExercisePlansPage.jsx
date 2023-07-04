@@ -17,7 +17,7 @@ function ExercisePlansPage() {
 
 	useEffect(() => {
 		getExercisePlans(exercise_type_id);
-	}, []);
+	}, [exercise_type_id]);
 
 	const crumbs = [
 		{
@@ -91,7 +91,7 @@ function ExercisePlansPage() {
 				const error_message =
 					error && error.message
 						? error.message
-						: "Unable to fetch exercise types. Something went wrong";
+						: "Unable to fetch exercise plans. Something went wrong";
 
 				await setErrorMessage(error_message);
 				console.error(error);

@@ -13,8 +13,8 @@ export default function ExercisesPage() {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		getExercises();
-	}, []);
+		getExercises(exercise_daily_plan_id);
+	}, [exercise_daily_plan_id]);
 
 	const crumbs = [
 		{
@@ -66,7 +66,7 @@ export default function ExercisesPage() {
 								</>
 							) : (
 								<div>
-									<p className="text-center">No exercise plans available</p>
+									<p className="text-center">No exercise available</p>
 								</div>
 							)}
 						</>
@@ -80,7 +80,7 @@ export default function ExercisesPage() {
 		</div>
 	);
 
-	async function getExercises() {
+	async function getExercises(exercise_daily_plan_id) {
 		await fetch(
 			`api/exercisedailyplanmodels/${exercise_daily_plan_id}/exercises`
 		)
@@ -88,7 +88,6 @@ export default function ExercisesPage() {
 				return await response.json();
 			})
 			.then(async (data) => {
-				console.log(data);
 				await setExercises(data);
 			})
 			.catch(async (error) => {

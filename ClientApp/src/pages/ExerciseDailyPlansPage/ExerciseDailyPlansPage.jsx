@@ -8,7 +8,6 @@ import ExerciseDailyPlanItemComponent from "../../components/ExerciseDailyPlanIt
 
 function ExerciseDailyPlansPage() {
 	const { exercise_plan_id, exercise_type_id } = useParams();
-	console.log(exercise_plan_id);
 
 	const [exerciseDailyPlans, setExerciseDailyPlans] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
@@ -16,7 +15,7 @@ function ExerciseDailyPlansPage() {
 
 	useEffect(() => {
 		getExerciseDailyPlans(exercise_plan_id);
-	}, []);
+	}, [exercise_plan_id]);
 
 	const crumbs = [
 		{
@@ -66,14 +65,16 @@ function ExerciseDailyPlansPage() {
 								</>
 							) : (
 								<div>
-									<p className="text-center">No exercise plans available</p>
+									<p className="text-center">
+										No exercise daily plans available
+									</p>
 								</div>
 							)}
 						</>
 					)
 				) : (
 					<div className="text-center">
-						<LoadingComponent loading_text="Fetching exercise plans..." />
+						<LoadingComponent loading_text="Fetching exercise daily plans..." />
 					</div>
 				)}
 			</div>
@@ -92,7 +93,7 @@ function ExerciseDailyPlansPage() {
 				const error_message =
 					error && error.message
 						? error.message
-						: "Unable to fetch exercise types. Something went wrong";
+						: "Unable to fetch exercise daily plans. Something went wrong";
 
 				await setErrorMessage(error_message);
 				console.error(error);
