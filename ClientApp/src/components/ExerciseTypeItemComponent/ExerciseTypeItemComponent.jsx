@@ -12,7 +12,7 @@ export default function ExerciseTypeItemComponent(props) {
 				width="100%"
 				className="card-img-top"
 				src={`https://localhost:7102/assets/images/uploads/exercise_types/${exerciseTypeId}${imageExtension}`}
-				alt="Card image cap"
+				alt={name}
 			/>
 			<div className="card-body">
 				<h3 className="card-title text-center">{name}</h3>

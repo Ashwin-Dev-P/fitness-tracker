@@ -6,6 +6,7 @@ import { Home } from "./components/Home";
 import ExerciseTypePage from "./pages/ExerciseType/ExerciseTypePage";
 import ExercisePlansPage from "./pages/ExercisePlansPage/ExercisePlansPage";
 import ExerciseDailyPlansPage from "./pages/ExerciseDailyPlansPage/ExerciseDailyPlansPage";
+import ExercisesPage from "./pages/ExercisesPage/ExercisesPage";
 
 const AppRoutes = [
 	{
@@ -26,6 +27,11 @@ const AppRoutes = [
 		path: "/exercise-daily-plans/:exercise_plan_id/exercise-plan/:exercise_type_id",
 		requireAuth: false,
 		element: <ExerciseDailyPlansPage />,
+	},
+	{
+		path: "/exercises/exercise-daily-plan-id/:exercise_daily_plan_id/exercise-plan-id/:exercise_plan_id/exercise-type-id/:exercise_type_id",
+		requireAuth: false,
+		element: <ExercisesPage />,
 	},
 
 	...ApiAuthorzationRoutes,

@@ -8,9 +8,7 @@ const target = env.ASPNETCORE_HTTPS_PORT
 	: "http://localhost:33068";
 
 const context = [
-	"/api/exercisetypemodels",
-	"/api/ExerciseTypeModels",
-	"/api/exerciseplanmodels",
+	"/api",
 	"/_configuration",
 	"/.well-known",
 	"/Identity",

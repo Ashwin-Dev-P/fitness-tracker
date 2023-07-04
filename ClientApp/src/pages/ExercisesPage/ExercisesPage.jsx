@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-// Shared component
 import BreadCrumbComponent from "../../components/SharedComponents/BreadCrumbComponent/BreadCrumbComponent";
 import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
-import ExerciseDailyPlanItemComponent from "../../components/ExerciseDailyPlanItemComponent/ExerciseDailyPlanItemComponent";
+import ExerciseItemComponent from "../../components/ExerciseItemComponent/ExerciseItemComponent";
 
-function ExerciseDailyPlansPage() {
-	const { exercise_plan_id, exercise_type_id } = useParams();
-	console.log(exercise_plan_id);
+export default function ExercisesPage() {
+	const { exercise_plan_id, exercise_type_id, exercise_daily_plan_id } =
+		useParams();
 
-	const [exerciseDailyPlans, setExerciseDailyPlans] = useState([]);
+	const [exercises, setExercises] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		getExerciseDailyPlans(exercise_plan_id);
+		getExercises();
 	}, []);
 
 	const crumbs = [
@@ -33,7 +31,11 @@ function ExerciseDailyPlansPage() {
 		},
 		{
 			name: "Daily plans",
-			route: "/exercise-daily-plans",
+			route: `/exercise-daily-plans/${exercise_plan_id}/exercise-plan/${exercise_type_id}`,
+		},
+		{
+			name: "Exercises",
+			route: `/exercise/${exercise_daily_plan_id}`,
 		},
 	];
 
@@ -46,19 +48,17 @@ function ExerciseDailyPlansPage() {
 						<div className="text-center text-danger">{errorMessage}</div>
 					) : (
 						<>
-							{exerciseDailyPlans && exerciseDailyPlans.length > 0 ? (
+							{exercises && exercises.length > 0 ? (
 								<>
-									<h2 className="text-center">Daily plans</h2>
+									<h2 className="text-center">Exercises</h2>
 									<ul className="row">
-										{exerciseDailyPlans.map((exerciseDailyPlan) => (
+										{exercises.map((exercise) => (
 											<li
-												key={exerciseDailyPlan.exerciseDailyPlanId}
+												key={exercise.exerciseId}
 												className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
 												<Link
-													to={`/exercises/exercise-daily-plan-id/${exerciseDailyPlan.exerciseDailyPlanId}/exercise-plan-id/${exercise_plan_id}/exercise-type-id/${exercise_type_id}`}>
-													<ExerciseDailyPlanItemComponent
-														exerciseDailyPlan={exerciseDailyPlan}
-													/>
+													to={`/exercises/exercise-id/${exercise.exerciseId}`}>
+													<ExerciseItemComponent exercise={exercise} />
 												</Link>
 											</li>
 										))}
@@ -73,26 +73,29 @@ function ExerciseDailyPlansPage() {
 					)
 				) : (
 					<div className="text-center">
-						<LoadingComponent loading_text="Fetching exercise plans..." />
+						<LoadingComponent loading_text="Loading exercises..." />
 					</div>
 				)}
 			</div>
 		</div>
 	);
 
-	async function getExerciseDailyPlans(exercise_type_id) {
-		await fetch(`api/exerciseplanmodels/${exercise_type_id}/ExerciseDailyPlans`)
+	async function getExercises() {
+		await fetch(
+			`api/exercisedailyplanmodels/${exercise_daily_plan_id}/exercises`
+		)
 			.then(async (response) => {
 				return await response.json();
 			})
 			.then(async (data) => {
-				await setExerciseDailyPlans(data);
+				console.log(data);
+				await setExercises(data);
 			})
 			.catch(async (error) => {
 				const error_message =
 					error && error.message
 						? error.message
-						: "Unable to fetch exercise types. Something went wrong";
+						: "Unable to fetch exercises. Something went wrong";
 
 				await setErrorMessage(error_message);
 				console.error(error);
@@ -102,4 +105,3 @@ function ExerciseDailyPlansPage() {
 		await setLoading(false);
 	}
 }
-export default ExerciseDailyPlansPage;
