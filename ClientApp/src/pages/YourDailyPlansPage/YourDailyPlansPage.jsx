@@ -45,7 +45,7 @@ export default function YourDailyPlansPage() {
 												key={exerciseDailyPlan.exerciseDailyPlanId}
 												className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
 												<Link
-													to={`/exercises/exercise-daily-plan-id/${exerciseDailyPlan.exerciseDailyPlanId}/exercise-plan-id/${exercise_plan_id}/exercise-type-id/${exercise_type_id}`}>
+													to={`/your-daily-plans/exercise-plan-id/${exercise_plan_id}/exercise-daily-plan-id/${exerciseDailyPlan.exerciseDailyPlanId}`}>
 													<ExerciseDailyPlanItemComponent
 														exerciseDailyPlan={exerciseDailyPlan}
 													/>
