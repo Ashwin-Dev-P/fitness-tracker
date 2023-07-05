@@ -21,6 +21,5 @@ namespace fitt.Models
 
         public virtual ICollection<ExerciseDailyPlanModel> ExerciseDailyPlans { get; set; }
 
-
     }
 }

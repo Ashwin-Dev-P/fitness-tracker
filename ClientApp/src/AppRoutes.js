@@ -11,6 +11,7 @@ import ExercisesPage from "./pages/ExercisesPage/ExercisesPage";
 const AppRoutes = [
 	{
 		index: true,
+		requireAuth: true,
 		element: <Home />,
 	},
 	{

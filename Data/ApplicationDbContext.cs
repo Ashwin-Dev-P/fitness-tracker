@@ -53,9 +53,14 @@ namespace fitt.Data
             // Only unique daily plans can be present in a exercise
             modelBuilder.Entity<ExercisePlanExerciseDailyPlanModel>()
                 .HasIndex(e => new { e.ExercisePlanId, e.ExerciseDailyPlanId });
+
             
 
-
+            // An application user cannot have multiple same exercise plans. He can switch to the plan if he
+            // has used it in the past
+            modelBuilder.Entity<ApplicationUserExercisePlanModel>()
+                .HasIndex(e => new { e.ApplicationUserId, e.ExercisePlanId }).IsUnique()
+                ;
         }
 
 
@@ -70,6 +75,7 @@ namespace fitt.Data
         public DbSet<ExerciseModel> Exercise { get; set; }
         public DbSet<fitt.Models.ExerciseDailyPlanModelExerciseModel> ExerciseDailyPlanExercise { get; set; } = default!;
         public DbSet<fitt.Models.ExercisePlanExerciseDailyPlanModel> ExercisePlanExerciseDailyPlanModel { get; set; } = default!;
+        public DbSet<fitt.Models.ApplicationUserExercisePlanModel> ApplicationUserExercisePlanModel { get; set; } = default!;
         
     }
 }
