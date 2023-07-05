@@ -51,7 +51,7 @@ namespace fitt.Controllers
             return exercisePlanModel;
         }
 
-        // GET: api/ExercisePlanModels/5
+        // GET: api/ExercisePlanModels/5/ExerciseDailyPlans
         [HttpGet("{id}/ExerciseDailyPlans")]
         public async Task<ActionResult<List<ExerciseDailyPlanModelDao>>> GetExerciseDailyPlanModelsWithinExercisePlanModels(int id)
         {

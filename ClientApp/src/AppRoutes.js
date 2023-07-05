@@ -7,6 +7,7 @@ import ExerciseTypePage from "./pages/ExerciseType/ExerciseTypePage";
 import ExercisePlansPage from "./pages/ExercisePlansPage/ExercisePlansPage";
 import ExerciseDailyPlansPage from "./pages/ExerciseDailyPlansPage/ExerciseDailyPlansPage";
 import ExercisesPage from "./pages/ExercisesPage/ExercisesPage";
+import YourDailyPlansPage from "./pages/YourDailyPlansPage/YourDailyPlansPage";
 
 const AppRoutes = [
 	{
@@ -33,6 +34,11 @@ const AppRoutes = [
 		path: "/exercises/exercise-daily-plan-id/:exercise_daily_plan_id/exercise-plan-id/:exercise_plan_id/exercise-type-id/:exercise_type_id",
 		requireAuth: false,
 		element: <ExercisesPage />,
+	},
+	{
+		path: "/your-daily-plans/exercise-plan-id/:exercise_plan_id",
+		requireAuth: true,
+		element: <YourDailyPlansPage />,
 	},
 
 	...ApiAuthorzationRoutes,
