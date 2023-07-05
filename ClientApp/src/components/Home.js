@@ -37,12 +37,10 @@ export class Home extends Component {
 												<li
 													key={exercisePlan.exercisePlanId}
 													className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
-													<Link
-														to={`/your-daily-plans/exercise-plan-id/${exercisePlan.exercisePlanId}`}>
-														<ExercisePlanItemComponent
-															exercisePlan={exercisePlan}
-														/>
-													</Link>
+													<ExercisePlanItemComponent
+														exercisePlan={exercisePlan}
+														planIsSelected={true}
+													/>
 												</li>
 											))}
 										</ul>

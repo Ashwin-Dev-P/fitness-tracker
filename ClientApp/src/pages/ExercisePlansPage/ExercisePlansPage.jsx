@@ -7,6 +7,7 @@ import ExercisePlanItemComponent from "../../components/ExercisePlanItemComponen
 // Shared components
 import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
 import BreadCrumbComponent from "../../components/SharedComponents/BreadCrumbComponent/BreadCrumbComponent";
+import authService from "../../components/api-authorization/AuthorizeService";
 
 function ExercisePlansPage() {
 	const { exercise_type_id } = useParams();
@@ -53,12 +54,12 @@ function ExercisePlansPage() {
 											<li
 												key={exercisePlan.exercisePlanId}
 												className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
-												<Link
-													to={`/exercise-daily-plans/${exercisePlan.exercisePlanId}/exercise-plan/${exercise_type_id}`}>
-													<ExercisePlanItemComponent
-														exercisePlan={exercisePlan}
-													/>
-												</Link>
+												<ExercisePlanItemComponent
+													exercisePlan={exercisePlan}
+													exerciseTypeId={exercise_type_id}
+													planIsSelected={false}
+													AddPlanToMyExercisePlans={AddPlanToMyExercisePlans}
+												/>
 											</li>
 										))}
 									</ul>
@@ -99,6 +100,31 @@ function ExercisePlansPage() {
 			});
 
 		await setLoading(false);
+	}
+
+	async function AddPlanToMyExercisePlans(exercisePlanId) {
+		const token = await authService.getAccessToken();
+		await fetch(`api/ApplicationUserExercisePlanModels`, {
+			method: "POST",
+			body: JSON.stringify({
+				ExercisePlanId: exercisePlanId,
+			}),
+			headers: !token
+				? {}
+				: {
+						Authorization: `Bearer ${token}`,
+						"Content-type": "application/json; charset=UTF-8",
+				  },
+		}).catch(async (error) => {
+			const error_message =
+				error && error.message
+					? error.message
+					: "Unable to add exercise plan. Something went wrong";
+
+			await setErrorMessage(error_message);
+			console.error(error);
+			console.error(error.message);
+		});
 	}
 }
 
