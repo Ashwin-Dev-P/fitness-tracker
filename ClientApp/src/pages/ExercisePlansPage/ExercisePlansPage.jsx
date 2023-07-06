@@ -123,16 +123,25 @@ function ExercisePlansPage() {
 						Authorization: `Bearer ${token}`,
 						"Content-type": "application/json; charset=UTF-8",
 				  },
-		}).catch(async (error) => {
-			const error_message =
-				error && error.message
-					? error.message
-					: "Unable to add exercise plan. Something went wrong";
+		})
+			.then(() => {
+				setExercisePlans(
+					exercisePlans.filter(
+						(exercisePlan) => exercisePlan.exercisePlanId != exercisePlanId
+					)
+				);
+			})
 
-			await setErrorMessage(error_message);
-			console.error(error);
-			console.error(error.message);
-		});
+			.catch(async (error) => {
+				const error_message =
+					error && error.message
+						? error.message
+						: "Unable to add exercise plan. Something went wrong";
+
+				await setErrorMessage(error_message);
+				console.error(error);
+				console.error(error.message);
+			});
 	}
 }
 
