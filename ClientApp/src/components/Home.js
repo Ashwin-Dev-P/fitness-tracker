@@ -14,6 +14,8 @@ export class Home extends Component {
 			loading: true,
 			errorMessage: null,
 		};
+
+		this.removeExercisePlans = this.removeExercisePlans.bind(this);
 	}
 	componentDidMount() {
 		this.getExercisePlans();
@@ -40,6 +42,9 @@ export class Home extends Component {
 													<ExercisePlanItemComponent
 														exercisePlan={exercisePlan}
 														planIsSelected={true}
+														RemoveExercisePlanFromMyPlans={
+															this.removeExercisePlans
+														}
 													/>
 												</li>
 											))}
@@ -95,5 +100,39 @@ export class Home extends Component {
 			});
 
 		this.setState({ loading: false });
+	}
+
+	async removeExercisePlans(exercisePlanId) {
+		const token = await authService.getAccessToken();
+		console.log("Bearer token:", token);
+		await fetch(
+			`api/ApplicationUserExercisePlanModels/RemoveExercisePlan/${exercisePlanId}`,
+			{
+				method: "DELETE",
+				headers: !token ? {} : { Authorization: `Bearer ${token}` },
+			}
+		)
+			.then(async () => {
+				this.setState({
+					exercisePlans: this.state.exercisePlans.filter(
+						(exercisePlan) => exercisePlan.exercisePlanId != exercisePlanId
+					),
+				});
+			})
+
+			.catch(async (error) => {
+				const error_message =
+					error && error.message
+						? error.message
+						: "Unable to remove exercise plans. Something went wrong";
+
+				// this.setState({
+				// 	errorMessage: error_message,
+				// });
+				console.error(error);
+				console.error(error.message);
+			});
+
+		//this.setState({ loading: false });
 	}
 }

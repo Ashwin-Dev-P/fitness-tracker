@@ -9,6 +9,7 @@ export default function ExercisePlanItemComponent(props) {
 		exercisePlan,
 		planIsSelected,
 		AddPlanToMyExercisePlans,
+		RemoveExercisePlanFromMyPlans,
 	} = props;
 	const { name, description, exercisePlanId } = exercisePlan;
 
@@ -31,6 +32,9 @@ export default function ExercisePlanItemComponent(props) {
 						<MyButtonComponent
 							className=" btn-danger  w-100"
 							text="Remove"
+							onClick={() => {
+								RemoveExercisePlanFromMyPlans(exercisePlanId);
+							}}
 						/>
 					</div>
 				</div>

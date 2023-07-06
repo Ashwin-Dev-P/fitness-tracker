@@ -171,6 +171,34 @@ namespace fitt.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        // DELETE: api/ApplicationUserExercisePlanModels/RemoveExercisePlan/5
+        [HttpDelete("RemoveExercisePlan/{id}")]
+        public async Task<IActionResult> RemoveExercisePlanForUser(int id)
+        {
+            if (_context.ApplicationUserExercisePlanModel == null)
+            {
+                return NotFound();
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+             //applicationUserExercisePlanModelToBeDeleted =await(from applicationUserExercisePlanModelItem in _context.ApplicationUserExercisePlanModel
+             //               where applicationUserExercisePlanModelItem.ApplicationUserId == userId && applicationUserExercisePlanModelItem.ExercisePlanId == id 
+             //               select applicationUserExercisePlanModelItem).ToArrayAsync()[0];
+            //var applicationUserExercisePlanModel = await _context.ApplicationUserExercisePlanModel.FindAsync(id);
+
+            ApplicationUserExercisePlanModel?  applicationUserExercisePlanModelToBeDeleted = _context.ApplicationUserExercisePlanModel.Where(a=>a.ApplicationUserId == userId && a.ExercisePlanId == id).FirstOrDefault();
+            if (applicationUserExercisePlanModelToBeDeleted == null)
+            {
+                return NotFound();
+            }
+
+            _context.ApplicationUserExercisePlanModel.Remove(applicationUserExercisePlanModelToBeDeleted);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         private bool ApplicationUserExercisePlanModelExists(int id)
         {
             return (_context.ApplicationUserExercisePlanModel?.Any(e => e.ApplicationUserExercisePlanId == id)).GetValueOrDefault();
