@@ -5,8 +5,7 @@ import ExerciseItemComponent from "../ExerciseItemComponent/ExerciseItemComponen
 import LoadingComponent from "../SharedComponents/LoadingComponent/LoadingComponent";
 
 function ExercisesDisplayComponent() {
-	const { exercise_plan_id, exercise_type_id, exercise_daily_plan_id } =
-		useParams();
+	const { exercise_daily_plan_id } = useParams();
 
 	const [exercises, setExercises] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
