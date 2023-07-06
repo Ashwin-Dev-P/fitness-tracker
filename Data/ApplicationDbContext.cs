@@ -61,6 +61,11 @@ namespace fitt.Data
             modelBuilder.Entity<ApplicationUserExercisePlanModel>()
                 .HasIndex(e => new { e.ApplicationUserId, e.ExercisePlanId }).IsUnique()
                 ;
+
+            // Default time for intensity is set to current time
+            modelBuilder.Entity<IntensityModel>()
+                .Property(e => e.ExerciseDate)
+                .HasDefaultValueSql("getdate()");
         }
 
 
@@ -76,6 +81,7 @@ namespace fitt.Data
         public DbSet<fitt.Models.ExerciseDailyPlanModelExerciseModel> ExerciseDailyPlanExercise { get; set; } = default!;
         public DbSet<fitt.Models.ExercisePlanExerciseDailyPlanModel> ExercisePlanExerciseDailyPlanModel { get; set; } = default!;
         public DbSet<fitt.Models.ApplicationUserExercisePlanModel> ApplicationUserExercisePlanModel { get; set; } = default!;
+        public DbSet<fitt.Models.IntensityModel> IntensityModel { get; set; } = default!;
         
     }
 }
