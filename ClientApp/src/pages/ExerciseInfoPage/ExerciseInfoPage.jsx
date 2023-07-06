@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
 import ExerciseItemComponent from "../../components/ExerciseItemComponent/ExerciseItemComponent";
+import ExerciseIntensityComponent from "../../components/ExerciseIntensityComponent/ExerciseIntensityComponent";
 
 export default function ExerciseInfoPage() {
 	const { exercise_id } = useParams();
@@ -15,6 +16,7 @@ export default function ExerciseInfoPage() {
 	}, [exercise_id]);
 	return (
 		<div>
+			<h2 className="text-center">Exercise info</h2>
 			<div>
 				{loading === false ? (
 					errorMessage ? (
@@ -23,10 +25,15 @@ export default function ExerciseInfoPage() {
 						<>
 							<div className="row mt-3">
 								<div className="col-xs-12 col-md-6 col-lg-4 col-xl-3 mt-3">
-									<ExerciseItemComponent exercise={exercise} />
+									<div className="row">
+										<ExerciseItemComponent exercise={exercise} />
+									</div>
+									<div className="row">
+										<ExerciseIntensityComponent exerciseId={exercise_id} />
+									</div>
 								</div>
-								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 mt-3 text-center">
-									your progress graph will appear here
+								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 my-3 p-3 text-center border">
+									Your progress graph will appear here
 								</div>
 							</div>
 						</>

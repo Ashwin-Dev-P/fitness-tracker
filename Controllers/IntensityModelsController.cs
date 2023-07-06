@@ -106,7 +106,7 @@ namespace fitt.Controllers
             _context.IntensityModel.Add(intensityModel);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok("intensity saved");
         }
 
         // DELETE: api/IntensityModels/5
