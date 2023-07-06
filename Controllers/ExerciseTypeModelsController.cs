@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using fitt.Data;
 using fitt.Models;
 using fitt.Dao;
+using System.Security.Claims;
 
 namespace fitt.Controllers
 {
@@ -43,12 +44,37 @@ namespace fitt.Controllers
           {
               return NotFound();
           }
-            
 
-            List<ExercisePlanDisplayModelDao> exercisePlans = await (from exercisePlan in _context.ExercisePlan
-                                                           where exercisePlan.ExerciseTypeId == id
-                                                           select new ExercisePlanDisplayModelDao()  { Name = exercisePlan.Name , Description = exercisePlan.Description , ExercisePlanId = exercisePlan.ExercisePlanId  }
-                                ).ToListAsync();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Console.WriteLine("hello" + userId);
+            Console.WriteLine("here");
+
+            List<ExercisePlanDisplayModelDao> exercisePlans;
+            if (userId == null)
+            {
+                exercisePlans = await (from exercisePlan in _context.ExercisePlan
+                                       where exercisePlan.ExerciseTypeId == id
+                                       select new ExercisePlanDisplayModelDao() { Name = exercisePlan.Name, Description = exercisePlan.Description, ExercisePlanId = exercisePlan.ExercisePlanId }
+                             ).ToListAsync();
+
+            }
+            else
+            {
+                // If the user is logged in , then get the exercise plans that are not already selected by the user
+                exercisePlans = await (from exercisePlan in _context.ExercisePlan
+                                       where !
+
+                                       (from applicationUserExercisePlan in _context.ApplicationUserExercisePlanModel
+                                        where applicationUserExercisePlan.ApplicationUserId == userId
+                                        select applicationUserExercisePlan.ExercisePlanId).Contains(exercisePlan.ExercisePlanId)
+                                        
+                                       select new ExercisePlanDisplayModelDao() { Name = exercisePlan.Name, Description = exercisePlan.Description, ExercisePlanId = exercisePlan.ExercisePlanId }
+                             
+                              ).ToListAsync();
+            }
+
+            
+            
 
             if (exercisePlans == null || exercisePlans.Count == 0)
             {

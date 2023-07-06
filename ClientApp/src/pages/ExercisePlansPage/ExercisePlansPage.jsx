@@ -81,7 +81,15 @@ function ExercisePlansPage() {
 	);
 
 	async function getExercisePlans(exercise_type_id) {
-		await fetch(`api/ExerciseTypeModels/${exercise_type_id}`)
+		const token = await authService.getAccessToken();
+		await fetch(`api/ExerciseTypeModels/${exercise_type_id}`, {
+			headers: !token
+				? {}
+				: {
+						Authorization: `Bearer ${token}`,
+						"Content-type": "application/json; charset=UTF-8",
+				  },
+		})
 			.then(async (response) => {
 				return await response.json();
 			})
