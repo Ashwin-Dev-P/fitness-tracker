@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 import ExerciseItemComponent from "../ExerciseItemComponent/ExerciseItemComponent";
 import LoadingComponent from "../SharedComponents/LoadingComponent/LoadingComponent";
+import ExerciseListItemComponent from "../ExerciseListItemComponent/ExerciseListItemComponent";
 
 function ExercisesDisplayComponent() {
 	const { exercise_daily_plan_id } = useParams();
@@ -26,18 +27,22 @@ function ExercisesDisplayComponent() {
 							{exercises && exercises.length > 0 ? (
 								<>
 									<h2 className="text-center">Exercises</h2>
-									<ul className="row">
-										{exercises.map((exercise) => (
-											<li
-												key={exercise.exerciseId}
-												className="col-xs-12 col-md-6 col-lg-4 col-xl-3  my-4">
-												<Link
-													to={`/exercises/exercise-id/${exercise.exerciseId}`}>
-													<ExerciseItemComponent exercise={exercise} />
-												</Link>
-											</li>
-										))}
-									</ul>
+									<div className="row">
+										<ul className="col-12 offset-md-4 col-md-4">
+											{exercises.map((exercise) => (
+												<li
+													key={exercise.exerciseId}
+													className="col-12 my-4">
+													<Link
+														to={`/exercises/exercise-id/${exercise.exerciseId}`}>
+														<ExerciseListItemComponent
+															exerciseName={exercise.name}
+														/>
+													</Link>
+												</li>
+											))}
+										</ul>
+									</div>
 								</>
 							) : (
 								<div>
