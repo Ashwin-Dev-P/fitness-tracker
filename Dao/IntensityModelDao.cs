@@ -12,6 +12,6 @@ namespace fitt.Dao
         public DateTime? ExerciseDate { get; set; }
 
         public int ExerciseId { get; set; }
-        
+
     }
 }

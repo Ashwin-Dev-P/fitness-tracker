@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using fitt.Data;
 using fitt.Models;
 using Microsoft.AspNetCore.Authorization;
-using fitt.Dao;
 using System.Security.Claims;
+using fitt.Dao;
+//using fitt.Dao.IntensityModelDaos;
 
 namespace fitt.Controllers
 {
@@ -52,6 +53,37 @@ namespace fitt.Controllers
             }
 
             return intensityModel;
+        }
+
+        // Gets intensity for a particular exercise of an user
+        // GET: api/IntensityModels/Exercise/5
+        [HttpGet("Exercise/{id}")]
+        public async Task<ActionResult<List<IntensityModelDao>>> GetIntensityOfExercise(int id)
+        {
+            if (_context.IntensityModel == null)
+            {
+                return NotFound();
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<IntensityModelDao> intensityArr =   await _context.IntensityModel.Where(intensityObj=> intensityObj.ApplicationUserId == userId && intensityObj.ExerciseId == id)
+                .Select(intensityObj =>
+                new IntensityModelDao()
+                {
+                     weights=intensityObj.weights,
+                     repetitions=intensityObj.repetitions,
+                     ExerciseDate=intensityObj.ExerciseDate,ExerciseId=intensityObj.ExerciseId,
+
+                })
+                .ToListAsync();
+            
+
+            if (intensityArr == null)
+            {
+                return NotFound();
+            }
+
+            return intensityArr;
         }
 
         // PUT: api/IntensityModels/5
