@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-
-import authService from "./api-authorization/AuthorizeService";
-import ExercisePlanItemComponent from "./ExercisePlanItemComponent/ExercisePlanItemComponent";
-import LoadingComponent from "./SharedComponents/LoadingComponent/LoadingComponent";
 import { Link } from "react-router-dom";
+
+// Sercies
+import authService from "./api-authorization/AuthorizeService";
+
+// Components
+import ExercisePlanItemComponent from "./ExercisePlanItemComponent/ExercisePlanItemComponent";
+
+// Shared components
+import LoadingComponent from "./SharedComponents/LoadingComponent/LoadingComponent";
 
 export class Home extends Component {
 	constructor(props) {

@@ -6,7 +6,7 @@ import "./ExerciseItemComponent.css";
 export default function ExerciseItemComponent(props) {
 	const { exerciseId, name, description, imageExtension } = props.exercise;
 	return (
-		<div className="card">
+		<div className="card shadow-sm">
 			<img
 				width="100%"
 				className="card-img-top"

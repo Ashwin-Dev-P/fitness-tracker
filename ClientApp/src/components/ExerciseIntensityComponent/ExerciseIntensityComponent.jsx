@@ -39,7 +39,7 @@ function ExerciseIntensityComponent(props) {
 	};
 
 	return (
-		<div className="p-3 shadow my-3 border">
+		<div className="p-3 card shadow-sm my-3 border">
 			<form
 				method="post"
 				onSubmit={submitIntensityForm}>

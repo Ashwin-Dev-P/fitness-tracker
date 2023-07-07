@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
-import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
+
+// Components
 import ExerciseItemComponent from "../../components/ExerciseItemComponent/ExerciseItemComponent";
 import ExerciseIntensityComponent from "../../components/ExerciseIntensityComponent/ExerciseIntensityComponent";
+import ExerciseProgressChartComponent from "../../components/ExerciseProgressChartComponent/ExerciseProgressChartComponent";
+
+// Shared components
+import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
 
 export default function ExerciseInfoPage() {
 	const { exercise_id } = useParams();
@@ -32,8 +38,8 @@ export default function ExerciseInfoPage() {
 										<ExerciseIntensityComponent exerciseId={exercise_id} />
 									</div>
 								</div>
-								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 my-3 p-3 text-center border">
-									Your progress graph will appear here
+								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 my-3 px-3 text-center">
+									<ExerciseProgressChartComponent exerciseId={exercise_id} />
 								</div>
 							</div>
 						</>
