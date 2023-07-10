@@ -43,6 +43,21 @@ const options = {
 	},
 };
 
+const months = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sept",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+
 function ExerciseProgressChartComponent(props) {
 	const { exerciseId } = props;
 
@@ -121,32 +136,18 @@ function ExerciseProgressChartComponent(props) {
 	);
 
 	async function convertDateTimeToDate(dateTime) {
-		const months = [
-			"Jan",
-			"Feb",
-			"Mar",
-			"Apr",
-			"May",
-			"Jun",
-			"Jul",
-			"Aug",
-			"Sept",
-			"Oct",
-			"Nov",
-			"Dec",
-		];
-		const date = new Date(dateTime.split("T")[0]);
+		const dateObj = new Date(dateTime.split("T")[0]);
 
-		const day = date.getDay();
-		const month = date.getMonth();
-		const year = date.getFullYear();
+		const date = dateObj.getDate();
+		const month = dateObj.getMonth();
+		const year = dateObj.getFullYear();
 
-		return `${months[month]} ${day}, ${year}`;
+		return `${months[month]} ${date}, ${year}`;
 	}
 
 	async function getExerciseIntensity(exerciseId) {
 		const token = await authService.getAccessToken();
-		await fetch(`api/Intensitymodels/Exercise/${exerciseId}`, {
+		fetch(`api/Intensitymodels/Exercise/${exerciseId}`, {
 			headers: !token
 				? {}
 				: {
@@ -163,17 +164,26 @@ function ExerciseProgressChartComponent(props) {
 			})
 
 			.then(async (intensityData) => {
+				console.log(intensityData);
 				let weightsArray = [];
-				let dateArray = [];
 
+				let dateConversionPromiseArray = [];
 				for (const intensityDatum of intensityData) {
 					weightsArray.push(intensityDatum.weights);
-					dateArray.push(
-						await convertDateTimeToDate(intensityDatum.exerciseDate)
+
+					// Push all dateConversion function promises inside array which will be resolved concurrently later
+					dateConversionPromiseArray.push(
+						convertDateTimeToDate(intensityDatum.exerciseDate)
 					);
 				}
-				await setTimeLineLabels(dateArray);
-				await setWeightProgressData(weightsArray);
+
+				// Using promise all to concurrently convert all sql date time to readable date.
+				// Concurrently running is more efficient
+				Promise.all(dateConversionPromiseArray).then(async (dateArray) => {
+					setTimeLineLabels(dateArray);
+				});
+
+				setWeightProgressData(weightsArray);
 			})
 			.catch(async (error) => {
 				const error_message =
@@ -181,12 +191,12 @@ function ExerciseProgressChartComponent(props) {
 						? error.message
 						: "Unable to fetch exercise plans. Something went wrong";
 
-				await setErrorMessage(error_message);
+				setErrorMessage(error_message);
 				console.error(error);
 				console.error(error.message);
 			});
 
-		await setLoading(false);
+		setLoading(false);
 	}
 }
 
