@@ -1,3 +1,6 @@
+:root {
+	--primary-color: #3282b8;
+}
 /* Provide sufficient contrast against white background */
 a {
 	color: #0366d6;
@@ -17,8 +20,8 @@ code {
 
 .btn-primary {
 	color: #fff;
-	background-color: #1b6ec2;
-	border-color: #1861ac;
+	background-color: var(--primary-color);
+	border-color: #fff;
 }
 
 ul {
@@ -27,4 +30,25 @@ ul {
 
 li {
 	list-style-type: none;
+}
+
+/* Dev */
+*::first-letter {
+	text-transform: capitalize;
+}
+
+body {
+	background-color: #dbdbdb;
+}
+
+li div {
+	background-color: #ffffff;
+}
+
+.card {
+	text-align: center;
+}
+
+.min-vh-80 {
+	min-height: 80vh;
 }

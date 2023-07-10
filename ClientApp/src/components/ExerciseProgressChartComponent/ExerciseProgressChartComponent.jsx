@@ -80,7 +80,7 @@ function ExerciseProgressChartComponent(props) {
 						) : (
 							<>
 								{weightProgressData && weightProgressData.length === 0 ? (
-									<p>
+									<p className="p-1">
 										No data available. Add intensity to see your progress as
 										graph
 									</p>

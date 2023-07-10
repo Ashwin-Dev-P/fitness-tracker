@@ -7,7 +7,7 @@ export default function ExerciseTypeItemComponent(props) {
 	const { exercise_type } = props;
 	const { exerciseTypeId, name, description, imageExtension } = exercise_type;
 	return (
-		<div className="card">
+		<div className="card rounded shadow">
 			<img
 				width="100%"
 				className="card-img-top"

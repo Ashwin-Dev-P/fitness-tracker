@@ -21,7 +21,7 @@ export default function ExerciseInfoPage() {
 		getExerciseInfo(exercise_id);
 	}, [exercise_id]);
 	return (
-		<div>
+		<div className="mx-3">
 			<h2 className="text-center">Exercise info</h2>
 			<div>
 				{loading === false ? (
@@ -38,7 +38,7 @@ export default function ExerciseInfoPage() {
 										<ExerciseIntensityComponent exerciseId={exercise_id} />
 									</div>
 								</div>
-								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 my-3 px-3 text-center">
+								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 my-3 px-0 px-md-3 text-center">
 									<ExerciseProgressChartComponent exerciseId={exercise_id} />
 								</div>
 							</div>

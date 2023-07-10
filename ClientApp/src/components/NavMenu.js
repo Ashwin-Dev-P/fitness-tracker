@@ -38,7 +38,8 @@ export class NavMenu extends Component {
 					light>
 					<NavbarBrand
 						tag={Link}
-						to="/">
+						to="/"
+						className="text-light">
 						fitt
 					</NavbarBrand>
 					<NavbarToggler
@@ -53,7 +54,7 @@ export class NavMenu extends Component {
 							<NavItem>
 								<NavLink
 									tag={Link}
-									className="text-dark"
+									className="text-light"
 									to="/">
 									Home
 								</NavLink>
@@ -61,7 +62,7 @@ export class NavMenu extends Component {
 							<NavItem>
 								<NavLink
 									tag={Link}
-									className="text-dark"
+									className="text-light"
 									to="/exercise-type">
 									Exercise type
 								</NavLink>

@@ -1,11 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import "./BreadCrumbComponent.css";
+
 export default function BreadCrumbComponent(props) {
 	const { crumbs } = props;
 	return (
-		<nav aria-label="breadcrumb">
-			<ol className="breadcrumb">
+		<nav
+			aria-label="breadcrumb"
+			className="breadcrumb-nav p-2 rounded shadow-sm">
+			<ol className="breadcrumb mb-0">
 				{crumbs.map(function (crumb, i) {
 					if (i == crumbs.length - 1) {
 						return (
@@ -26,7 +30,6 @@ export default function BreadCrumbComponent(props) {
 					}
 				})}
 			</ol>
-			<hr />
 		</nav>
 	);
 }
