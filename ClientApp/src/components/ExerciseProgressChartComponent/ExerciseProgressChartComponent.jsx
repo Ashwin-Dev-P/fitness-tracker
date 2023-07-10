@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -10,10 +12,12 @@ import {
 	Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-//import faker from "faker";
 
-// Sercies
+// Service
 import authService from "../api-authorization/AuthorizeService";
+
+// Components
+// Shared components
 import LoadingComponent from "../SharedComponents/LoadingComponent/LoadingComponent";
 
 ChartJS.register(
@@ -42,6 +46,9 @@ const options = {
 function ExerciseProgressChartComponent(props) {
 	const { exerciseId } = props;
 
+	// Check if user is loggedIn
+	const { isLoggedIn } = props;
+
 	const [errorMessage, setErrorMessage] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -65,36 +72,51 @@ function ExerciseProgressChartComponent(props) {
 	};
 
 	useEffect(() => {
-		getExerciseIntensity(exerciseId);
+		if (isLoggedIn) {
+			getExerciseIntensity(exerciseId);
+		}
 	}, [exerciseId]);
 
 	return (
 		<div className="card shadow-sm">
-			{loading ? (
-				<LoadingComponent />
-			) : (
-				<>
-					<div className="d-flex h-100 justify-content-center align-items-center">
-						{errorMessage ? (
-							<p className="text-danger">{errorMessage}</p>
+			<div className="d-flex h-100 justify-content-center align-items-center">
+				{isLoggedIn ? (
+					<>
+						{loading ? (
+							<LoadingComponent />
 						) : (
 							<>
-								{weightProgressData && weightProgressData.length === 0 ? (
-									<p className="p-1">
-										No data available. Add intensity to see your progress as
-										graph
-									</p>
+								{errorMessage ? (
+									<p className="text-danger">{errorMessage}</p>
 								) : (
-									<Line
-										options={options}
-										data={data}
-									/>
+									<>
+										{weightProgressData && weightProgressData.length === 0 ? (
+											<p className="p-1">
+												No data available. Add intensity to see your progress as
+												graph
+											</p>
+										) : (
+											<Line
+												options={options}
+												data={data}
+											/>
+										)}
+									</>
 								)}
 							</>
 						)}
+					</>
+				) : (
+					<div>
+						<p>Login to get analysis of your progress as graph.</p>
+						<Link
+							to="/authentication/login"
+							className="btn btn-primary">
+							Login
+						</Link>
 					</div>
-				</>
-			)}
+				)}
+			</div>
 		</div>
 	);
 
@@ -133,8 +155,13 @@ function ExerciseProgressChartComponent(props) {
 				  },
 		})
 			.then(async (response) => {
-				return await response.json();
+				if (response.status === 200) {
+					return await response.json();
+				} else {
+					throw new Error("Unable to get graph data. Something went wrong");
+				}
 			})
+
 			.then(async (intensityData) => {
 				let weightsArray = [];
 				let dateArray = [];

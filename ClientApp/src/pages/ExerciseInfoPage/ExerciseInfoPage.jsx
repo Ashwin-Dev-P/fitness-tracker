@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
+// Service
+import authService from "../../components/api-authorization/AuthorizeService";
+
 // Components
 import ExerciseItemComponent from "../../components/ExerciseItemComponent/ExerciseItemComponent";
 import ExerciseIntensityComponent from "../../components/ExerciseIntensityComponent/ExerciseIntensityComponent";
@@ -11,6 +14,13 @@ import ExerciseProgressChartComponent from "../../components/ExerciseProgressCha
 import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
 
 export default function ExerciseInfoPage() {
+	// Check if user is loggedIn
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const promise1 = Promise.resolve(authService.isAuthenticated());
+	promise1.then((loginStatus) => {
+		setIsLoggedIn(loginStatus);
+	});
+
 	const { exercise_id } = useParams();
 
 	const [exercise, setExercise] = useState([]);
@@ -39,7 +49,10 @@ export default function ExerciseInfoPage() {
 									</div>
 								</div>
 								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 my-3 px-0 px-md-3 text-center">
-									<ExerciseProgressChartComponent exerciseId={exercise_id} />
+									<ExerciseProgressChartComponent
+										exerciseId={exercise_id}
+										isLoggedIn={isLoggedIn}
+									/>
 								</div>
 							</div>
 						</>
