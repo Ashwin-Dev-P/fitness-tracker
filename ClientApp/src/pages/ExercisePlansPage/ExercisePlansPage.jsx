@@ -38,7 +38,7 @@ function ExercisePlansPage() {
 	return (
 		<div>
 			<BreadCrumbComponent crumbs={crumbs} />
-			<div className="min-vh-80 d-flex h-100 justify-content-center align-items-center">
+			<div>
 				{loading === false ? (
 					errorMessage ? (
 						<div className="text-center text-danger">{errorMessage}</div>
@@ -65,7 +65,7 @@ function ExercisePlansPage() {
 									</ul>
 								</>
 							) : (
-								<div>
+								<div className="min-vh-80 d-flex h-100 justify-content-center align-items-center">
 									<p className="text-center ">No exercise plans available</p>
 								</div>
 							)}

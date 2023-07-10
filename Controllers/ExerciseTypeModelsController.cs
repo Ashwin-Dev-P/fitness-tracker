@@ -62,11 +62,17 @@ namespace fitt.Controllers
             {
                 // If the user is logged in , then get the exercise plans that are not already selected by the user
                 exercisePlans = await (from exercisePlan in _context.ExercisePlan
-                                       where !
+                                       where 
 
-                                       (from applicationUserExercisePlan in _context.ApplicationUserExercisePlanModel
+                                       exercisePlan.ExerciseTypeId == id
+
+                                       &&
+
+                                       !(from applicationUserExercisePlan in _context.ApplicationUserExercisePlanModel
                                         where applicationUserExercisePlan.ApplicationUserId == userId
                                         select applicationUserExercisePlan.ExercisePlanId).Contains(exercisePlan.ExercisePlanId)
+
+                                        
                                         
                                        select new ExercisePlanDisplayModelDao() { Name = exercisePlan.Name, Description = exercisePlan.Description, ExercisePlanId = exercisePlan.ExercisePlanId }
                              
