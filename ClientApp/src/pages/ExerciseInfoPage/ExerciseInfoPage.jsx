@@ -45,7 +45,10 @@ export default function ExerciseInfoPage() {
 										<ExerciseItemComponent exercise={exercise} />
 									</div>
 									<div className="row">
-										<ExerciseIntensityComponent exerciseId={exercise_id} />
+										<ExerciseIntensityComponent
+											exerciseId={exercise_id}
+											isLoggedIn={isLoggedIn}
+										/>
 									</div>
 								</div>
 								<div className="col-xs-12 col-md-6 col-lg-8 col-xl-9 my-3 px-0 px-md-3 text-center">

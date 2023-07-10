@@ -5,7 +5,7 @@ import authService from "../../components/api-authorization/AuthorizeService";
 import MyButtonComponent from "../SharedComponents/MyButtonComponent/MyButtonComponent";
 
 function ExerciseIntensityComponent(props) {
-	const { exerciseId } = props;
+	const { exerciseId, isLoggedIn } = props;
 
 	const [successMessage, setSuccessMessage] = useState(null);
 	const [errorMessage, setErrorMessage] = useState(null);
@@ -46,67 +46,76 @@ function ExerciseIntensityComponent(props) {
 				<div>
 					<h3 className="text-center">Exercise intensity</h3>
 				</div>
-				<div className="my-3">
-					<label htmlFor="weights">Weights</label>
-					<input
-						type="number"
-						id="weights"
-						inputMode="decimal"
-						min={0}
-						className="form-control"
-						value={state.weights}
-						onChange={changeHandler}
-						required
-					/>
-				</div>
-				<div className="my-3">
-					<label htmlFor="repetitions">Repetitions</label>
-					<input
-						type="number"
-						inputMode="numeric"
-						id="repetitions"
-						min={0}
-						className="form-control"
-						value={state.repetitions}
-						onChange={changeHandler}
-					/>
-				</div>
-				<div className="my-3">
-					<label htmlFor="exerciseDate">Exercise date time</label>
-					<input
-						type="datetime-local"
-						id="exerciseDate"
-						className="form-control"
-						value={state.exerciseDate}
-						onChange={changeHandler}
-					/>
-				</div>
-				<div className="my-3">
-					<MyButtonComponent
-						type="submit"
-						className="form-control btn btn-primary"
-						text="Add intensity"
-						loading={loading}
-					/>
-				</div>
 
-				{!loading ? (
+				{isLoggedIn ? (
 					<>
-						{errorMessage ? (
-							<div>
-								<p className="text-danger text-center">{errorMessage}</p>
-							</div>
-						) : (
+						<div className="my-3">
+							<label htmlFor="weights">Weights</label>
+							<input
+								type="number"
+								id="weights"
+								inputMode="decimal"
+								min={0}
+								className="form-control"
+								value={state.weights}
+								onChange={changeHandler}
+								required
+							/>
+						</div>
+						<div className="my-3">
+							<label htmlFor="repetitions">Repetitions</label>
+							<input
+								type="number"
+								inputMode="numeric"
+								id="repetitions"
+								min={0}
+								className="form-control"
+								value={state.repetitions}
+								onChange={changeHandler}
+							/>
+						</div>
+						<div className="my-3">
+							<label htmlFor="exerciseDate">Exercise date time</label>
+							<input
+								type="datetime-local"
+								id="exerciseDate"
+								className="form-control"
+								value={state.exerciseDate}
+								onChange={changeHandler}
+							/>
+						</div>
+						<div className="my-3">
+							<MyButtonComponent
+								type="submit"
+								className="form-control btn btn-primary"
+								text="Add intensity"
+								loading={loading}
+							/>
+						</div>
+
+						{!loading ? (
 							<>
-								{successMessage ? (
+								{errorMessage ? (
 									<div>
-										<p className="text-success text-center">{successMessage}</p>
+										<p className="text-danger text-center">{errorMessage}</p>
 									</div>
-								) : null}
+								) : (
+									<>
+										{successMessage ? (
+											<div>
+												<p className="text-success text-center">
+													{successMessage}
+												</p>
+											</div>
+										) : null}
+									</>
+								)}
 							</>
-						)}
+						) : null}
 					</>
-				) : null}
+				) : (
+					<p>Login to track and store your exercise intensity progress</p>
+				)}
 			</form>
 		</div>
 	);
