@@ -8,6 +8,7 @@ import ExercisePlanItemComponent from "../../components/ExercisePlanItemComponen
 import LoadingComponent from "../../components/SharedComponents/LoadingComponent/LoadingComponent";
 import BreadCrumbComponent from "../../components/SharedComponents/BreadCrumbComponent/BreadCrumbComponent";
 import authService from "../../components/api-authorization/AuthorizeService";
+import ModalComponent from "../../components/SharedComponents/ModalComponent/ModalComponent";
 
 function ExercisePlansPage() {
 	const { exercise_type_id } = useParams();
@@ -15,6 +16,9 @@ function ExercisePlansPage() {
 	const [exercisePlans, setExercisePlans] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
 	const [loading, setLoading] = useState(true);
+
+	const [showModal, setShowModal] = useState(false);
+	const [modalMessageObj, setModalMessageObj] = useState(null);
 
 	useEffect(() => {
 		getExercisePlans(exercise_type_id);
@@ -35,13 +39,25 @@ function ExercisePlansPage() {
 		},
 	];
 
+	const closeModal = () => {
+		setShowModal(false);
+	};
+
 	return (
 		<div>
+			<ModalComponent
+				closeModal={closeModal}
+				show={showModal}
+				modalMessageObj={modalMessageObj}
+			/>
+
 			<BreadCrumbComponent crumbs={crumbs} />
 			<div>
 				{loading === false ? (
 					errorMessage ? (
-						<div className="text-center text-danger">{errorMessage}</div>
+						<div className="min-vh-80 d-flex h-100 justify-content-center align-items-center text-danger">
+							<p>{errorMessage}</p>
+						</div>
 					) : (
 						<>
 							{exercisePlans && exercisePlans.length > 0 ? (
@@ -124,12 +140,19 @@ function ExercisePlansPage() {
 						"Content-type": "application/json; charset=UTF-8",
 				  },
 		})
-			.then(() => {
-				setExercisePlans(
-					exercisePlans.filter(
-						(exercisePlan) => exercisePlan.exercisePlanId != exercisePlanId
-					)
-				);
+			.then((response) => {
+				const { status } = response;
+				if (status === 200) {
+					setExercisePlans(
+						exercisePlans.filter(
+							(exercisePlan) => exercisePlan.exercisePlanId != exercisePlanId
+						)
+					);
+				} else if (status === 401) {
+					throw new Error("Unauthorized. Login to continue");
+				} else {
+					throw new Error("Unable to add plan. Something went wrong");
+				}
 			})
 
 			.catch(async (error) => {
@@ -138,7 +161,13 @@ function ExercisePlansPage() {
 						? error.message
 						: "Unable to add exercise plan. Something went wrong";
 
-				await setErrorMessage(error_message);
+				//await setErrorMessage(error_message);
+				await setShowModal(true);
+				await setModalMessageObj({
+					modalBody: error_message,
+					error: true,
+					modalTitle: "Alert",
+				});
 				console.error(error);
 				console.error(error.message);
 			});
