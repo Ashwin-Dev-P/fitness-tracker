@@ -98,6 +98,30 @@ function ExerciseProgressChartComponent(props) {
 		</div>
 	);
 
+	async function convertDateTimeToDate(dateTime) {
+		const months = [
+			"Jan",
+			"Feb",
+			"Mar",
+			"Apr",
+			"May",
+			"Jun",
+			"Jul",
+			"Aug",
+			"Sept",
+			"Oct",
+			"Nov",
+			"Dec",
+		];
+		const date = new Date(dateTime.split("T")[0]);
+
+		const day = date.getDay();
+		const month = date.getMonth();
+		const year = date.getFullYear();
+
+		return `${months[month]} ${day}, ${year}`;
+	}
+
 	async function getExerciseIntensity(exerciseId) {
 		const token = await authService.getAccessToken();
 		await fetch(`api/Intensitymodels/Exercise/${exerciseId}`, {
@@ -117,7 +141,9 @@ function ExerciseProgressChartComponent(props) {
 
 				for (const intensityDatum of intensityData) {
 					weightsArray.push(intensityDatum.weights);
-					dateArray.push(intensityDatum.exerciseDate);
+					dateArray.push(
+						await convertDateTimeToDate(intensityDatum.exerciseDate)
+					);
 				}
 				await setTimeLineLabels(dateArray);
 				await setWeightProgressData(weightsArray);

@@ -67,14 +67,16 @@ namespace fitt.Controllers
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             List<IntensityModelDao> intensityArr =   await _context.IntensityModel.Where(intensityObj=> intensityObj.ApplicationUserId == userId && intensityObj.ExerciseId == id)
+                
                 .Select(intensityObj =>
                 new IntensityModelDao()
                 {
                      weights=intensityObj.weights,
                      repetitions=intensityObj.repetitions,
-                     ExerciseDate=intensityObj.ExerciseDate,ExerciseId=intensityObj.ExerciseId,
+                     ExerciseDate= intensityObj.ExerciseDate,ExerciseId=intensityObj.ExerciseId,
 
                 })
+                .OrderBy(intensityObj => intensityObj.ExerciseDate)
                 .ToListAsync();
             
 
