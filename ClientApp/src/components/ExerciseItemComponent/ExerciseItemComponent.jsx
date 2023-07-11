@@ -10,7 +10,7 @@ export default function ExerciseItemComponent(props) {
 			<img
 				width="100%"
 				className="card-img-top"
-				src={`https://localhost:7102/assets/images/uploads/exercises/${exerciseId}${imageExtension}`}
+				src={`/assets/images/uploads/exercises/${exerciseId}${imageExtension}`}
 				alt={name}
 			/>
 			<div className="card-body">

@@ -90,7 +90,7 @@ function ExerciseProgressChartComponent(props) {
 		if (isLoggedIn) {
 			getExerciseIntensity(exerciseId);
 		}
-	}, [exerciseId]);
+	}, [exerciseId, isLoggedIn]);
 
 	return (
 		<div className="card shadow-sm">

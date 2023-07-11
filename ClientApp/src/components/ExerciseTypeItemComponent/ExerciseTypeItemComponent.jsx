@@ -11,7 +11,7 @@ export default function ExerciseTypeItemComponent(props) {
 			<img
 				width="100%"
 				className="card-img-top"
-				src={`https://localhost:7102/assets/images/uploads/exercise_types/${exerciseTypeId}${imageExtension}`}
+				src={`/assets/images/uploads/exercise_types/${exerciseTypeId}${imageExtension}`}
 				alt={name}
 			/>
 			<div className="card-body">
