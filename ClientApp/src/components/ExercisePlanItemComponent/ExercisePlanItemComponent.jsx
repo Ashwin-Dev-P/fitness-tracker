@@ -14,7 +14,7 @@ export default function ExercisePlanItemComponent(props) {
 	const { name, description, exercisePlanId } = exercisePlan;
 
 	return (
-		<div className="shadow p-3 rounded">
+		<div className="shadow p-3 rounded h-100">
 			<div>
 				<h3>{name}</h3>
 				<p>{description}</p>
