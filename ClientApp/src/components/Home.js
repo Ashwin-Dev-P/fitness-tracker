@@ -84,7 +84,16 @@ export class Home extends Component {
 			headers: !token ? {} : { Authorization: `Bearer ${token}` },
 		})
 			.then(async (response) => {
-				return await response.json();
+				const { status } = response;
+				if (status === 200) {
+					return await response.json();
+				} else if (status === 401) {
+					throw new Error("Unauthorized. Login to continue");
+				} else {
+					throw new Error(
+						"Unable to get your exercise plans. Something went wrong."
+					);
+				}
 			})
 			.then(async (data) => {
 				await this.setState({

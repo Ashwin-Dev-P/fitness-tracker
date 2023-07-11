@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using fitt.Controllers;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,8 +26,8 @@ builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
 // Fixes JWT unauthorized 401 error
-builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://localhost:44485");
-//builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://fitness-tracker-dev.azurewebsites.net/");
+builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://fitness-tracker-dev.azurewebsites.net");
+//builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://localhost:44485");
 
 
 builder.Services.AddControllersWithViews();
@@ -41,6 +42,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    
     app.UseMigrationsEndPoint();
 }
 else

@@ -15,6 +15,7 @@ const AppRoutes = [
 	{
 		index: true,
 		requireAuth: true,
+		path: "/",
 		element: <Home />,
 	},
 	{
@@ -51,6 +52,13 @@ const AppRoutes = [
 		path: "/your-daily-plans/exercise-plan-id/:exercise_plan_id/exercise-daily-plan-id/:exercise_daily_plan_id",
 		requireAuth: true,
 		element: <YourExercisesPage />,
+	},
+
+	// Default page when no page is found
+	{
+		requireAuth: false,
+		path: "*",
+		element: <ExerciseTypePage />,
 	},
 
 	...ApiAuthorzationRoutes,
