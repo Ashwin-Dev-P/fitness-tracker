@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using fitt.Controllers;
+using Microsoft.AspNetCore.Authorization;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,8 +28,8 @@ builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
 // Fixes JWT unauthorized 401 error
-builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://fitness-tracker-dev.azurewebsites.net");
-//builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://localhost:44485");
+//builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://fitness-tracker-dev.azurewebsites.net");
+builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://localhost:44485");
 
 
 builder.Services.AddControllersWithViews();
@@ -36,6 +38,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 
@@ -61,13 +65,16 @@ app.UseHttpsRedirection();
 
 
 
+
+
+app.UseIdentityServer();
+
+app.UseAuthentication();
+
+
 app.UseStaticFiles();
 app.UseRouting();
 
-
-
-app.UseAuthentication();
-app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllerRoute(
