@@ -52,7 +52,7 @@ namespace fitt.Controllers
 
         // GET: api/SleepModels/MySleep/Average
         [HttpGet("MySleep/Average")]
-        public async Task<ActionResult<double>> GetMyAverageSleepDuration()
+        public async Task<ActionResult<double>?> GetMyAverageSleepDuration()
         {
             if (_context.Sleep == null)
             {
@@ -61,10 +61,23 @@ namespace fitt.Controllers
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Return average sleep duration of an user in minutes
-            return await _context.Sleep.Where(s => s.ApplicationUserId == userId).Select(s =>( (s.SleepDuration.Hours * 60) + s.SleepDuration.Minutes)).AverageAsync();
-           
+            List<int> sleepDurationArray = await _context.Sleep.Where(s => s.ApplicationUserId == userId).Select(s => ((s.SleepDuration.Hours * 60) + s.SleepDuration.Minutes)).ToListAsync();
+
+
+            if ( sleepDurationArray == null || sleepDurationArray.Count == 0)
+            {
+                   return NotFound() ;
+            }
+            else
+            {
+                return sleepDurationArray.Average();
+            }
+
             
+
+            // Return average sleep duration of an user in minutes
+
+
         }
 
         // GET: api/SleepModels/5

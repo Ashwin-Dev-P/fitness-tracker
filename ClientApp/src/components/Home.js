@@ -11,6 +11,7 @@ import ExercisePlanItemComponent from "./ExercisePlanItemComponent/ExercisePlanI
 import LoadingComponent from "./SharedComponents/LoadingComponent/LoadingComponent";
 import BodyWeightChartComponent from "./BodyWeightChartComponent/BodyWeightChartComponent";
 import BodyWeightInfoComponent from "./BodyWeightInfoComponent/BodyWeightInfoComponent";
+import AverageOverViewComponent from "./AverageOverViewComponent/AverageOverViewComponent";
 
 export class Home extends Component {
 	constructor(props) {
@@ -75,6 +76,7 @@ export class Home extends Component {
 						</div>
 					)}
 				</div>
+				<AverageOverViewComponent />
 				<BodyWeightInfoComponent />
 			</div>
 		);
