@@ -15,20 +15,7 @@ import { Line } from "react-chartjs-2";
 
 // Service
 import authService from "../api-authorization/AuthorizeService";
-
-// Components
-// Shared components
 import LoadingComponent from "../SharedComponents/LoadingComponent/LoadingComponent";
-
-ChartJS.register(
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	Title,
-	Tooltip,
-	Legend
-);
 
 const options = {
 	responsive: true,
@@ -38,7 +25,7 @@ const options = {
 		},
 		title: {
 			display: true,
-			text: "Your body weight progress",
+			text: "Rest and recovery progress",
 		},
 	},
 };
@@ -58,7 +45,7 @@ const months = [
 	"Dec",
 ];
 
-function BodyWeightChartComponent(props) {
+export default function SleepChartComponent() {
 	// Check if user is loggedIn
 	const isLoggedIn = true;
 
@@ -66,7 +53,7 @@ function BodyWeightChartComponent(props) {
 	const [loading, setLoading] = useState(true);
 
 	const [timeLineLabels, setTimeLineLabels] = useState([]);
-	const [weightProgressData, setWeightProgressData] = useState([]);
+	const [sleepData, setSleepData] = useState([]);
 
 	//const weightProgressData = [10, 12, 2121, 2121];
 
@@ -74,8 +61,8 @@ function BodyWeightChartComponent(props) {
 		labels: timeLineLabels,
 		datasets: [
 			{
-				label: "weight in kg",
-				data: weightProgressData,
+				label: "sleep duration in hours",
+				data: sleepData,
 				borderColor: "rgb(255, 99, 132)",
 				backgroundColor: "rgba(255, 99, 132, 0.5)",
 				tension: 0.2,
@@ -86,7 +73,7 @@ function BodyWeightChartComponent(props) {
 
 	useEffect(() => {
 		//if (isLoggedIn) {
-		getBodyWeightData();
+		getSleepData();
 		//}
 	}, []);
 
@@ -103,10 +90,10 @@ function BodyWeightChartComponent(props) {
 									<p className="text-danger">{errorMessage}</p>
 								) : (
 									<>
-										{weightProgressData && weightProgressData.length === 0 ? (
+										{sleepData && sleepData.length === 0 ? (
 											<p className="p-1">
-												No data available. Add weights to see your progress as
-												graph
+												No data available. Add sleep duration to see your
+												progress as graph
 											</p>
 										) : (
 											<Line
@@ -143,9 +130,17 @@ function BodyWeightChartComponent(props) {
 		return `${months[month]} ${date}, ${year}`;
 	}
 
-	async function getBodyWeightData() {
+	async function getHoursFromDuration(duration) {
+		const durationArr = duration.split(":");
+		const hours = Number(durationArr[0]);
+		const minutes = Number(durationArr[1]);
+		console.log(durationArr, hours, minutes, hours + minutes / 60);
+		return hours + minutes / 60;
+	}
+
+	async function getSleepData() {
 		const token = await authService.getAccessToken();
-		fetch(`api/BodyWeightModels/MyWeights`, {
+		fetch(`api/SleepModels/MySleep`, {
 			headers: !token
 				? {}
 				: {
@@ -161,17 +156,17 @@ function BodyWeightChartComponent(props) {
 				}
 			})
 
-			.then(async (bodyWeightData) => {
-				let weightsArray = [];
+			.then(async (sleepData) => {
+				console.log(sleepData);
 
+				let sleepDurationPromiseArray = [];
 				let dateConversionPromiseArray = [];
-				for (const bodyWeightDatum of bodyWeightData) {
-					weightsArray.push(bodyWeightDatum.bodyWeight);
+				for (const sleepDatum of sleepData) {
+					const { sleepDuration, sleepDate } = sleepDatum;
 
 					// Push all dateConversion function promises inside array which will be resolved concurrently later
-					dateConversionPromiseArray.push(
-						convertDateTimeToDate(bodyWeightDatum.recordedDate)
-					);
+					dateConversionPromiseArray.push(convertDateTimeToDate(sleepDate));
+					sleepDurationPromiseArray.push(getHoursFromDuration(sleepDuration));
 				}
 
 				// Using promise all to concurrently convert all sql date time to readable date.
@@ -180,13 +175,18 @@ function BodyWeightChartComponent(props) {
 					setTimeLineLabels(dateArray);
 				});
 
-				setWeightProgressData(weightsArray);
+				Promise.all(sleepDurationPromiseArray).then(
+					async (sleepDurationArray) => {
+						console.log(sleepDurationArray);
+						setSleepData(sleepDurationArray);
+					}
+				);
 			})
 			.catch(async (error) => {
 				const error_message =
 					error && error.message
 						? error.message
-						: "Unable to fetch exercise plans. Something went wrong";
+						: "Unable to get data. Something went wrong";
 
 				setErrorMessage(error_message);
 				console.error(error);
@@ -196,4 +196,3 @@ function BodyWeightChartComponent(props) {
 		setLoading(false);
 	}
 }
-export default BodyWeightChartComponent;
