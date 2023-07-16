@@ -82,6 +82,13 @@ namespace fitt.Data
                 .Property( s => s.CreatedAt)
                 .HasDefaultValueSql("getdate()");
 
+            modelBuilder.Entity<CalorieModel>()
+                .Property(c => c.CalorieConsumptionDate)
+                .HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<CalorieModel>()
+                .Property(c=> c.CreatedAt)
+                .HasDefaultValueSql("getdate()");
+
 
         }
 
@@ -103,6 +110,8 @@ namespace fitt.Data
         public DbSet<BodyWeightModel> BodyWeight { get; set; } = default!;
 
         public DbSet<SleepModel> Sleep { get; set; } = default!;
-        
+
+        public DbSet<CalorieModel> Calorie { get; set; } = default!;
+
     }
 }
