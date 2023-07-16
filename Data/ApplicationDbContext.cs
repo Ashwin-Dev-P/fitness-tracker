@@ -66,6 +66,15 @@ namespace fitt.Data
             modelBuilder.Entity<IntensityModel>()
                 .Property(e => e.ExerciseDate)
                 .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<BodyWeightModel>()
+                .Property(bw => bw.CreatedAt)
+                .HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<BodyWeightModel>()
+                .Property(bw => bw.RecordedDate)
+                .HasDefaultValueSql("getdate()");
+
+
         }
 
 
@@ -82,6 +91,8 @@ namespace fitt.Data
         public DbSet<fitt.Models.ExercisePlanExerciseDailyPlanModel> ExercisePlanExerciseDailyPlanModel { get; set; } = default!;
         public DbSet<fitt.Models.ApplicationUserExercisePlanModel> ApplicationUserExercisePlanModel { get; set; } = default!;
         public DbSet<fitt.Models.IntensityModel> IntensityModel { get; set; } = default!;
+
+        public DbSet<BodyWeightModel> BodyWeight { get; set; } = default!;
         
     }
 }
