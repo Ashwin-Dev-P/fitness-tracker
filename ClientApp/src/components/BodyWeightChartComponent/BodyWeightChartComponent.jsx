@@ -38,7 +38,7 @@ const options = {
 		},
 		title: {
 			display: true,
-			text: "Your progress",
+			text: "Your body weight progress",
 		},
 	},
 };
@@ -91,7 +91,7 @@ function BodyWeightChartComponent(props) {
 	}, []);
 
 	return (
-		<div className="card shadow my-5 p-5">
+		<div className="card shadow p-xs-1 p-md-3">
 			<div className="d-flex h-100 justify-content-center align-items-center">
 				{isLoggedIn ? (
 					<>
@@ -162,7 +162,6 @@ function BodyWeightChartComponent(props) {
 			})
 
 			.then(async (bodyWeightData) => {
-				console.log(bodyWeightData);
 				let weightsArray = [];
 
 				let dateConversionPromiseArray = [];

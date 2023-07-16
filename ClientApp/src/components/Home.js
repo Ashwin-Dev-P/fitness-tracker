@@ -10,6 +10,7 @@ import ExercisePlanItemComponent from "./ExercisePlanItemComponent/ExercisePlanI
 // Shared components
 import LoadingComponent from "./SharedComponents/LoadingComponent/LoadingComponent";
 import BodyWeightChartComponent from "./BodyWeightChartComponent/BodyWeightChartComponent";
+import BodyWeightInfoComponent from "./BodyWeightInfoComponent/BodyWeightInfoComponent";
 
 export class Home extends Component {
 	constructor(props) {
@@ -74,7 +75,7 @@ export class Home extends Component {
 						</div>
 					)}
 				</div>
-				<BodyWeightChartComponent />
+				<BodyWeightInfoComponent />
 			</div>
 		);
 	}
