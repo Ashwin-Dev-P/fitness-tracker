@@ -3,6 +3,7 @@ import authService from "../api-authorization/AuthorizeService";
 
 import CircularProgressBarComponent from "../SharedComponents/CircularProgressBarComponent/CircularProgressBarComponent";
 import LoadingComponent from "../SharedComponents/LoadingComponent/LoadingComponent";
+import { Link } from "react-router-dom";
 
 function AverageSleepComponent() {
 	const [averageSleep, setAverageSleep] = useState(null);
@@ -30,6 +31,11 @@ function AverageSleepComponent() {
 									progressText={`${averageSleep} hrs`}
 									maxValue={9.5}
 								/>
+								<Link
+									to="sleep"
+									className="btn btn-primary mt-4">
+									View
+								</Link>
 							</>
 						)}
 					</>

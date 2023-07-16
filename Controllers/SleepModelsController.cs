@@ -150,7 +150,7 @@ namespace fitt.Controllers
             _context.Sleep.Add(sleepModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSleepModel", new { id = sleepModel.SleepId }, sleepModel);
+            return Ok("Sleep data added");
         }
 
         // DELETE: api/SleepModels/5
