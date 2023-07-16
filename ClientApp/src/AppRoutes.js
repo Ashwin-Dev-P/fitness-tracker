@@ -12,6 +12,7 @@ import YourExercisesPage from "./pages/YourExercisesPage/YourExercisesPage";
 import ExerciseInfoPage from "./pages/ExerciseInfoPage/ExerciseInfoPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import SleepPage from "./pages/SleepPage/SleepPage";
+import CaloriePage from "./pages/CaloriePage/CaloriePage";
 
 const AppRoutes = [
 	{
@@ -24,6 +25,11 @@ const AppRoutes = [
 		requireAuth: true,
 		path: "/sleep",
 		element: <SleepPage />,
+	},
+	{
+		requireAuth: true,
+		path: "/calorie",
+		element: <CaloriePage />,
 	},
 	{
 		path: "/exercise-type",
