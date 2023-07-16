@@ -26,10 +26,10 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
-
+    
 // Fixes JWT unauthorized 401 error
-//builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://fitness-tracker-dev.azurewebsites.net");
-builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://localhost:44485");
+builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://fitness-tracker-dev.azurewebsites.net");
+//builder.Services.Configure<JwtBearerOptions>("IdentityServerJwtBearer", o => o.Authority = "https://localhost:44485");
 
 
 builder.Services.AddControllersWithViews();
@@ -73,6 +73,7 @@ app.UseAuthentication();
 
 
 app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthorization();

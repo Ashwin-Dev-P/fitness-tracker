@@ -46,7 +46,7 @@ namespace fitt.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _context.BodyWeight.Where(bwOwject=>bwOwject.ApplicationUserId == userId).ToListAsync();
+            return await _context.BodyWeight.Where(bwOwject=>bwOwject.ApplicationUserId == userId).OrderBy(bwObj=>bwObj.RecordedDate).ToListAsync();
         }
 
         // GET: api/BodyWeightModels/5
