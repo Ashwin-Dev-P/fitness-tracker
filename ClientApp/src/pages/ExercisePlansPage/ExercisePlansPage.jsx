@@ -88,7 +88,7 @@ function ExercisePlansPage() {
 						</>
 					)
 				) : (
-					<div className="text-center">
+					<div className="text-center min-vh-80 d-flex align-items-center justify-content-center">
 						<LoadingComponent loading_text="Fetching exercise plans..." />
 					</div>
 				)}

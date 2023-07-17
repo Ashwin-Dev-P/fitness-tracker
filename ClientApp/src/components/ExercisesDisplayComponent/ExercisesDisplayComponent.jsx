@@ -21,7 +21,9 @@ function ExercisesDisplayComponent() {
 			<div>
 				{loading === false ? (
 					errorMessage ? (
-						<div className="text-center text-danger">{errorMessage}</div>
+						<div className="text-center text-danger min-vh-80 d-flex align-items-center justify-content-center">
+							{errorMessage}
+						</div>
 					) : (
 						<>
 							{exercises && exercises.length > 0 ? (
@@ -52,7 +54,7 @@ function ExercisesDisplayComponent() {
 						</>
 					)
 				) : (
-					<div className="text-center">
+					<div className="text-center min-vh-80 d-flex align-items-center justify-content-center">
 						<LoadingComponent loading_text="Loading exercises..." />
 					</div>
 				)}

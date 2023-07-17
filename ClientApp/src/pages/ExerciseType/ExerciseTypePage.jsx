@@ -40,7 +40,9 @@ class ExerciseTypePage extends Component {
 				<BreadCrumbComponent crumbs={crumbs} />
 				{loading === false ? (
 					error_message ? (
-						<div className="text-center text-danger">{error_message}</div>
+						<div className="text-center text-danger min-vh-80 d-flex align-items-center justify-content-center">
+							{error_message}
+						</div>
 					) : (
 						<>
 							{exercise_types && exercise_types.length > 0 ? (
@@ -71,7 +73,7 @@ class ExerciseTypePage extends Component {
 						</>
 					)
 				) : (
-					<div className="text-center">
+					<div className="text-center min-vh-80 d-flex align-items-center justify-content-center">
 						<LoadingComponent loading_text="Fetching exercise types..." />
 					</div>
 				)}
