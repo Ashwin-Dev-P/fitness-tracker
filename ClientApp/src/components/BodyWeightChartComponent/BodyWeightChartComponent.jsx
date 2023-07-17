@@ -103,16 +103,16 @@ function BodyWeightChartComponent(props) {
 									<p className="text-danger">{errorMessage}</p>
 								) : (
 									<>
-										{weightProgressData && weightProgressData.length === 0 ? (
-											<p className="p-1">
-												No data available. Add weights to see your progress as
-												graph
-											</p>
-										) : (
+										{weightProgressData && weightProgressData.length > 0 ? (
 											<Line
 												options={options}
 												data={data}
 											/>
+										) : (
+											<p className="p-1">
+												No data available. Add weights to see your progress as
+												graph
+											</p>
 										)}
 									</>
 								)}

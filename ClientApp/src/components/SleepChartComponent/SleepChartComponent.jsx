@@ -134,7 +134,7 @@ export default function SleepChartComponent() {
 		const durationArr = duration.split(":");
 		const hours = Number(durationArr[0]);
 		const minutes = Number(durationArr[1]);
-		console.log(durationArr, hours, minutes, hours + minutes / 60);
+
 		return hours + minutes / 60;
 	}
 
@@ -157,8 +157,6 @@ export default function SleepChartComponent() {
 			})
 
 			.then(async (sleepData) => {
-				console.log(sleepData);
-
 				let sleepDurationPromiseArray = [];
 				let dateConversionPromiseArray = [];
 				for (const sleepDatum of sleepData) {
@@ -177,7 +175,6 @@ export default function SleepChartComponent() {
 
 				Promise.all(sleepDurationPromiseArray).then(
 					async (sleepDurationArray) => {
-						console.log(sleepDurationArray);
 						setSleepData(sleepDurationArray);
 					}
 				);

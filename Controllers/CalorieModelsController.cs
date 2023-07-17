@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using fitt.Data;
 using fitt.Models;
 using System.Security.Claims;
+using fitt.Dao.CalorieDao;
 
 namespace fitt.Controllers
 {
@@ -35,7 +36,7 @@ namespace fitt.Controllers
 
         // GET: api/CalorieModels/MyCalorie
         [HttpGet("MyCalorie")]
-        public async Task<ActionResult<IEnumerable<CalorieModel>>> GetMyCalorie()
+        public async Task<ActionResult<IEnumerable<CalorieModelGetDao>>> GetMyCalorie()
         {
             if (_context.Calorie == null)
             {
@@ -43,7 +44,15 @@ namespace fitt.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _context.Calorie.Where(c=>c.ApplicationUserId == userId).OrderBy(c=>c.CalorieConsumptionDate).ToListAsync();
+            return await _context.Calorie
+                .Where(c=>c.ApplicationUserId == userId)
+                .Select(c=> new CalorieModelGetDao
+                {
+                    CalorieId = c.CalorieId,
+                    CalorieCount = c.CalorieCount,
+                    CalorieConsumptionDate = c.CalorieConsumptionDate,
+                })
+                .OrderBy(c=>c.CalorieConsumptionDate).ToListAsync();
         }
 
         // GET: api/CalorieModels/MyCalorie/Average

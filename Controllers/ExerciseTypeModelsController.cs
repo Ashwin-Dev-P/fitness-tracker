@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using fitt.Data;
 using fitt.Models;
 using fitt.Dao;
 using System.Security.Claims;
+
 
 namespace fitt.Controllers
 {
@@ -27,13 +23,23 @@ namespace fitt.Controllers
 
         // GET: api/ExerciseTypeModels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ExerciseTypeModel>>> GetExerciseType()
+        public async Task<ActionResult<IEnumerable<ExerciseTypeModelGetDao>?>> GetExerciseType()
         {
           if (_context.ExerciseType == null)
           {
               return NotFound();
           }
-            return await _context.ExerciseType.ToListAsync();
+            return await _context.ExerciseType
+               .Select(e => new ExerciseTypeModelGetDao
+               {
+                   ExerciseTypeId = e.ExerciseTypeId,
+                   Name = e.Name,
+                   Description = e.Description,
+                   ImageExtension = e.ImageExtension
+
+               })
+               .OrderByDescending(e => e.ExerciseTypeId)
+               .ToListAsync();
         }
 
         // GET: api/ExerciseTypeModels/5
@@ -46,16 +52,17 @@ namespace fitt.Controllers
           }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Console.WriteLine("hello" + userId);
-            Console.WriteLine("here");
+            
 
             List<ExercisePlanDisplayModelDao> exercisePlans;
             if (userId == null)
             {
                 exercisePlans = await (from exercisePlan in _context.ExercisePlan
                                        where exercisePlan.ExerciseTypeId == id
+                                       
                                        select new ExercisePlanDisplayModelDao() { Name = exercisePlan.Name, Description = exercisePlan.Description, ExercisePlanId = exercisePlan.ExercisePlanId }
-                             ).ToListAsync();
+                                        
+                                       ).OrderByDescending(e=>e.ExercisePlanId).ToListAsync();
 
             }
             else
@@ -72,11 +79,11 @@ namespace fitt.Controllers
                                         where applicationUserExercisePlan.ApplicationUserId == userId
                                         select applicationUserExercisePlan.ExercisePlanId).Contains(exercisePlan.ExercisePlanId)
 
-                                        
-                                        
+
+                                       
                                        select new ExercisePlanDisplayModelDao() { Name = exercisePlan.Name, Description = exercisePlan.Description, ExercisePlanId = exercisePlan.ExercisePlanId }
                              
-                              ).ToListAsync();
+                              ).OrderByDescending(e => e.ExercisePlanId).ToListAsync();
             }
 
             

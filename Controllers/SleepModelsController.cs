@@ -39,7 +39,7 @@ namespace fitt.Controllers
 
         // GET: api/SleepModels/MySleep
         [HttpGet("MySleep")]
-        public async Task<ActionResult<IEnumerable<SleepModel>>> GetMySleep()
+        public async Task<ActionResult<IEnumerable<SleepModelGetDao>?>> GetMySleep()
         {
             if (_context.Sleep == null)
             {
@@ -47,7 +47,15 @@ namespace fitt.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _context.Sleep.Where(s=>s.ApplicationUserId == userId).OrderBy(s=>s.SleepDate).ToListAsync();
+            return await _context.Sleep
+                .Where(s=>s.ApplicationUserId == userId)
+                .Select(s=>new SleepModelGetDao {
+                    SleepId = s.SleepId,
+                    SleepDuration = s.SleepDuration,
+                    SleepDate = s.SleepDate,
+                })
+                .OrderBy(s=>s.SleepDate)
+                .ToListAsync();
         }
 
         // GET: api/SleepModels/MySleep/Average

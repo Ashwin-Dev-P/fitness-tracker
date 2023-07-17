@@ -60,7 +60,6 @@ function AverageSleepComponent() {
 			.then(async (response) => {
 				const { status } = response;
 				if (status === 200) {
-					console.log(response);
 					return response.json();
 				} else if (status === 404) {
 					return 0;

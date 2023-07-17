@@ -38,7 +38,7 @@ namespace fitt.Controllers
 
         // GET: api/BodyWeightModels
         [HttpGet("MyWeights")]
-        public async Task<ActionResult<IEnumerable<BodyWeightModel>>> GetMyBodyWeight()
+        public async Task<ActionResult<IEnumerable<BodyWeightsModelGetDao>?>> GetMyBodyWeight()
         {
             if (_context.BodyWeight == null)
             {
@@ -46,7 +46,15 @@ namespace fitt.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _context.BodyWeight.Where(bwOwject=>bwOwject.ApplicationUserId == userId).OrderBy(bwObj=>bwObj.RecordedDate).ToListAsync();
+            return await _context.BodyWeight
+                .Where(bwOwject=>bwOwject.ApplicationUserId == userId)
+                .Select(bwObj=> new BodyWeightsModelGetDao { 
+                    BodyWeightId= bwObj.BodyWeightId,
+                    BodyWeight = bwObj.BodyWeight,
+                    RecordedDate = bwObj.RecordedDate
+                })
+                .OrderBy(bwObj=>bwObj.RecordedDate)
+                .ToListAsync();
         }
 
         // GET: api/BodyWeightModels/5
