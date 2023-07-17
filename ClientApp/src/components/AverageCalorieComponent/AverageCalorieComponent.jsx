@@ -17,29 +17,31 @@ function AverageCalorieComponent() {
 	return (
 		<>
 			<div className="card p-4 shadow">
-				{loading ? (
-					<LoadingComponent />
-				) : (
-					<>
-						{errorMessage ? (
-							<div className="text-center text-danger">{errorMessage}</div>
-						) : (
-							<>
-								<h4 className="mb-3">Avg calorie</h4>
-								<CircularProgressBarComponent
-									progressValue={averageCalorie}
-									progressText={`${averageCalorie}`}
-									maxValue={3000}
-								/>
-								<Link
-									to="calorie"
-									className="btn btn-primary mt-4">
-									View
-								</Link>
-							</>
-						)}
-					</>
-				)}
+				<h4 className="mb-3">Avg calorie</h4>
+				<div className="card border-0 d-flex align-items-center justify-content-center  mt-md-0">
+					{loading ? (
+						<LoadingComponent />
+					) : (
+						<>
+							{errorMessage ? (
+								<div className="text-center text-danger">{errorMessage}</div>
+							) : (
+								<>
+									<CircularProgressBarComponent
+										progressValue={averageCalorie}
+										progressText={`${averageCalorie}`}
+										maxValue={3000}
+									/>
+									<Link
+										to="calorie"
+										className="btn btn-primary mt-4 w-100">
+										View
+									</Link>
+								</>
+							)}
+						</>
+					)}
+				</div>
 			</div>
 		</>
 	);
@@ -66,7 +68,7 @@ function AverageCalorieComponent() {
 				} else if (status === 401) {
 					throw new Error("Unauthorized. Login in to continue");
 				} else {
-					throw new Error("Unable to get sleep data");
+					throw new Error("Unable to get calorie data");
 				}
 			})
 			.then((responseObj) => {

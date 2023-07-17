@@ -56,7 +56,16 @@ namespace fitt.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await _context.Calorie.Where(c => c.ApplicationUserId == userId).Select(c=>c.CalorieCount).AverageAsync();
+            List<int> calorieList = await _context.Calorie.Where(c => c.ApplicationUserId == userId)
+                .Select(c => c.CalorieCount)
+                .ToListAsync();
+
+            if (calorieList == null || calorieList.Count == 0)
+            {
+                return 0;
+            }
+           
+            return calorieList.Average();
         }
 
         // GET: api/CalorieModels/5

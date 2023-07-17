@@ -17,6 +17,8 @@ function AverageSleepComponent() {
 	return (
 		<>
 			<div className="card p-4 shadow">
+				<h4 className="mb-3">Average sleep</h4>
+
 				{loading ? (
 					<LoadingComponent />
 				) : (
@@ -25,7 +27,6 @@ function AverageSleepComponent() {
 							<div className="text-center text-danger">{errorMessage}</div>
 						) : (
 							<>
-								<h4 className="mb-3">Average sleep</h4>
 								<CircularProgressBarComponent
 									progressValue={averageSleep}
 									progressText={`${averageSleep} hrs`}
