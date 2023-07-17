@@ -33,6 +33,8 @@ export class Home extends Component {
 		var { loading, errorMessage, exercisePlans } = this.state;
 		return (
 			<div>
+				<h2 className="text-center">Dashboard</h2>
+				<hr />
 				<div>
 					{loading === false ? (
 						errorMessage ? (
@@ -76,7 +78,9 @@ export class Home extends Component {
 						</div>
 					)}
 				</div>
+				<hr />
 				<AverageOverViewComponent />
+				<hr />
 				<BodyWeightInfoComponent />
 			</div>
 		);

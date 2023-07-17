@@ -10,6 +10,9 @@ using fitt.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using fitt.Dao;
+using fitt.Data.Migrations;
+using System.Collections;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 //using fitt.Dao.IntensityModelDaos;
 
 namespace fitt.Controllers
@@ -86,6 +89,98 @@ namespace fitt.Controllers
             }
 
             return intensityArr;
+        }
+
+        static int MaxOccurrence(int[] array, Hashtable hs)
+        {
+            int mostCommom = array[0];
+            int occurences = 0;
+            foreach (int num in array)
+            {
+                if (!hs.ContainsKey(num))
+                {
+                    hs.Add(num, 1);
+                }
+                else
+                {
+                    int tempOccurences = (int)hs[num];
+                    tempOccurences++;
+                    hs.Remove(num);
+                    hs.Add(num, tempOccurences);
+
+                    if (occurences < tempOccurences)
+                    {
+                        occurences = tempOccurences;
+                        mostCommom = num;
+                    }
+                }
+            }
+            foreach (DictionaryEntry entry in hs)
+            {
+                Console.WriteLine("{0}, {1}", entry.Key, entry.Value);
+            }
+            Console.WriteLine("The commmon numer is " + mostCommom + " And it appears " + occurences + " times");
+            return mostCommom;
+        }
+
+        // Gets intensity for a particular exercise of an user
+        // GET: api/IntensityModels/FavouriteExercise
+        [HttpGet("FavouriteExercise")]
+        public async Task<ActionResult<ExerciseModelGetDao?>> GetFavouriteExercise()
+        {
+            if (_context.IntensityModel == null)
+            {
+                return NotFound();
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int[]? intensityArr = await _context.IntensityModel.Where(intensityObj => intensityObj.ApplicationUserId == userId )
+                
+                .Select(intensityObj =>
+                
+                     intensityObj.ExerciseId
+
+                )
+                
+                
+                .ToArrayAsync();
+
+            if (intensityArr == null || intensityArr.Length == 0)
+            {
+                return NotFound();
+            }
+            //Console.WriteLine(intensityArr);
+
+            //var newInt = from intensity in _context.IntensityModel
+            //             where (intensity.ApplicationUserId == userId)
+            //             group intensity by intensity.ExerciseId;
+            //foreach (var inten in newInt)
+            //{
+            //    Console.WriteLine("hellwwwo");
+            //    Console.WriteLine(inten);
+            //}
+
+
+
+            //foreach (var inten in intensityArr)
+            //{
+            //    Console.WriteLine("Exercise Id");
+            //    Console.WriteLine(inten);
+            //}
+
+            Hashtable hs = new Hashtable();
+            int mostExerciseId = MaxOccurrence(intensityArr, hs);
+
+            ExerciseModelGetDao? Exercise = await (from exercise in _context.Exercise
+                           where (exercise.ExerciseId == mostExerciseId)
+                           
+                           select (new ExerciseModelGetDao { ExerciseId = exercise.ExerciseId, Name = exercise.Name, ImageExtension = exercise.ImageExtension })
+                           ).FirstOrDefaultAsync();
+
+
+            
+
+            return Exercise;
         }
 
         // PUT: api/IntensityModels/5
